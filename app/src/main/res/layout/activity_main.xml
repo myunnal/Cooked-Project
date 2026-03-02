@@ -7,4 +7,51 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <View
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="95dp"
+        android:background="#73374F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Siti pretty much prilipdo kad laikytusi vietoj UI objects -->
+
+    <ImageButton
+        android:id="@+id/buttonHome"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/frame_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="577dp" />
+
+    <ImageButton
+        android:id="@+id/buttonAdd"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/frame_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp"
+        tools:layout_editor_absoluteX="171dp"
+        tools:layout_editor_absoluteY="577dp" />
+
+    <ImageButton
+        android:id="@+id/buttonProfile"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/frame_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        tools:layout_editor_absoluteX="326dp"
+        tools:layout_editor_absoluteY="577dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
