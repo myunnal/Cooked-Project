@@ -1,4 +1,4 @@
-package com.example.cookedproj;
+package com.example.cookinti;
 
 import android.os.Bundle;
 
