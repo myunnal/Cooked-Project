@@ -8,9 +8,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHolder> {
 
-    private String[] localDataSet;
+    private AppDatabase db;
+
+    private List<Recipe> recipes;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -54,8 +58,10 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
      */
-    public RecipeFeedView(String[] dataSet) {
-        localDataSet = dataSet;
+    public RecipeFeedView(List<Recipe> dataSet, AppDatabase database)
+    {
+        recipes = dataSet;
+        db = database;
     }
 
     // Create new views (invoked by the layout manager)
@@ -74,15 +80,19 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(localDataSet[position]);
-        viewHolder.getAuthorText().setText("Jonas");
-        viewHolder.getDescriptionText().setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+
+        Recipe rec = recipes.get(position);
+        viewHolder.getTextView().setText(rec.getName());
+        viewHolder.getDescriptionText().setText(rec.getDescription());
         viewHolder.getImageView().setImageResource(R.drawable.basically_burger_1);
+
+        String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
+        viewHolder.getAuthorText().setText(userName);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return localDataSet.length;
+        return recipes.size();
     }
 }

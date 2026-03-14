@@ -6,14 +6,11 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-            entity = User.class,
+@Entity(foreignKeys = {@ForeignKey(entity = User.class,
             parentColumns = "id",
             childColumns = "fk_userid",
-            onDelete = ForeignKey.CASCADE
-        )}
-)
+            onDelete = ForeignKey.CASCADE)
+})
 public class Recipe {
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -29,15 +26,15 @@ public class Recipe {
     @ColumnInfo(name = "image")
     private String imageLink;
 
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "description")
     private String description;
 
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "ingredients")
     private String ingredients;
 
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "steps")
     private String steps;
 

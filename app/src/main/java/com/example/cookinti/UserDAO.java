@@ -17,4 +17,7 @@ public interface UserDAO {
 
     @Query("SELECT * from User ORDER BY id ASC")
     List<User> getAllUsers();
+
+    @Query("SELECT * from User WHERE User.id = :search")
+    User getUser(long search);
 }
