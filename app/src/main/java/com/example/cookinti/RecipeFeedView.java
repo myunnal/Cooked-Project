@@ -3,11 +3,12 @@ package com.example.cookinti;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHolder> {
 
     private String[] localDataSet;
 
@@ -19,6 +20,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         private final TextView textView;
         private final TextView authorText;
         private final TextView descriptionText;
+        private final ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
@@ -27,6 +29,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             textView = (TextView) view.findViewById(R.id.recipeText);
             authorText = (TextView) view.findViewById(R.id.authorText);
             descriptionText = (TextView) view.findViewById(R.id.descriptionText);
+            imageView = (ImageView) view.findViewById(R.id.recipeImage);
         }
 
         public TextView getTextView() {
@@ -40,6 +43,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public TextView getDescriptionText() {
             return descriptionText;
         }
+        public ImageView getImageView() {
+            return imageView;
+        }
     }
 
     /**
@@ -48,7 +54,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
      */
-    public CustomAdapter(String[] dataSet) {
+    public RecipeFeedView(String[] dataSet) {
         localDataSet = dataSet;
     }
 
@@ -71,6 +77,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.getTextView().setText(localDataSet[position]);
         viewHolder.getAuthorText().setText("Jonas");
         viewHolder.getDescriptionText().setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        viewHolder.getImageView().setImageResource(R.drawable.basically_burger_1);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

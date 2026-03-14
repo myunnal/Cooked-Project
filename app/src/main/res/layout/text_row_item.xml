@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:layout_marginLeft="@dimen/margin_medium"
@@ -15,8 +16,9 @@
             android:id="@+id/recipeImage"
             android:layout_width="match_parent"
             android:layout_height="310dp"
-            android:background="#FF0000"
-            app:srcCompat="@android:drawable/editbox_dropdown_light_frame" />
+            android:background="#140E0E"
+            app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <TextView
             android:id="@+id/recipeText"

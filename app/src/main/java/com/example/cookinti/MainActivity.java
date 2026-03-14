@@ -23,14 +23,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        AppDatabase db = AppActivity.getDatabase();
+
         String[] dataset = {"holy", "shit", "fellas", "holy", "shit","holy",
                 "shit","holy", "shit","holy", "shit","holy", "shit","holy",
                 "shit","holy", "shit","holy", "shit","holy", "shit","holy",
-                "shit","holy", "shit","holy", "shit",};
-        CustomAdapter customAdapter = new CustomAdapter(dataset);
+                "shit","holy", "shit","holy", "shit"};
+        RecipeFeedView recipeFeed = new RecipeFeedView(dataset);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(customAdapter);
+        recyclerView.setAdapter(recipeFeed);
     }
 }
