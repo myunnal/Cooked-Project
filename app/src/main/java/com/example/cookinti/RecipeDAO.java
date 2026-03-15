@@ -17,4 +17,7 @@ public interface RecipeDAO {
 
     @Query("SELECT * from Recipe ORDER BY id ASC")
     List<Recipe> getAllRecipes();
+
+    @Query("SELECT * from Recipe WHERE Recipe.id = :search")
+    Recipe getRecipe(long search);
 }
