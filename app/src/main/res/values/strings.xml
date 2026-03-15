@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cookinti</string>
+    <string name="element_text">sampleText</string>
 </resources>
