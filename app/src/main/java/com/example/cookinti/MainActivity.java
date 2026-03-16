@@ -7,14 +7,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.Set;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    AppDatabase db;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,55 +31,39 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        db = AppActivity.getDatabase();
-        SetUpDatabase();
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // sets the fragment the app starts with
+        setCurrentFragment(new FeedFragment());
 
 
-        /*String[] dataset = {"holy", "shit", "fellas", "holy", "shit","holy",
-                "shit","holy", "shit","holy", "shit","holy", "shit","holy",
-                "shit","holy", "shit","holy", "shit","holy", "shit","holy",
-                "shit","holy", "shit","holy", "shit"};*/
-        RecipeFeedView recipeFeed = new RecipeFeedView(db.recipeDao().getAllRecipes(), db);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(recipeFeed);
+        // footer things, apparently if-else is better than switch for android
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int itemId = menuItem.getItemId();
+            if (itemId == R.id.feed) {
+                setCurrentFragment(new FeedFragment());
+            } else if (itemId == R.id.search) {
+                setCurrentFragment(new SearchFragment());
+            } else if (itemId == R.id.favourites) {
+                setCurrentFragment(new FavouritesFragment());
+            } else if (itemId == R.id.profile) {
+                setCurrentFragment(new ProfileFragment());
+            }
+
+            // Return true to indicate that we handled the item click
+            return true;
+        });
     }
 
-    private void SetUpDatabase()
-    {
-        db.userDao().deleteAll();
 
-        User user = new User();
-        user.setUsername("špygelis");
-        user.setBio("who up jav'ing their kotlin");
-        db.userDao().insert(user);
 
-        long uid = db.userDao().getAllUsers().get(0).getId();
-
-        Recipe recipe = new Recipe();
-        recipe.setName("Kotletas");
-        recipe.setDescription("Lorem ipsum. Pasikepi ant keptuves.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
-        recipe.setImageLink("0");
-        recipe.setSteps("0");
-        db.recipeDao().insert(recipe);
-
-        recipe.setName("Pyragas");
-        recipe.setDescription("Sveiti i orkaite.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
-        recipe.setImageLink("0");
-        recipe.setSteps("0");
-        db.recipeDao().insert(recipe);
-
-        recipe.setName("Pjaustyti pomidorai");
-        recipe.setDescription("Pirma reikia paimti i ranka peili");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
-        recipe.setImageLink("0");
-        recipe.setSteps("0");
-        db.recipeDao().insert(recipe);
+    // This function replaces the current fragment with the one passed as a parameter
+    private void setCurrentFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                // Replace the fragment inside the container with the new fragment
+                .replace(R.id.fragment_container, fragment)
+                // Commit the transaction to actually perform the change
+                .commit();
     }
 }
