@@ -1,5 +1,9 @@
 package com.example.cookinti;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +17,6 @@ import java.util.List;
 public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHolder> {
 
     private AppDatabase db;
-
     private List<Recipe> recipes;
 
     /**
@@ -88,6 +91,16 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
 
         String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
         viewHolder.getAuthorText().setText(userName);
+
+        Context cntxt = viewHolder.getImageView().getContext();
+        viewHolder.getImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(cntxt, RecipeActivity.class);
+                intent.putExtra("RecipeId", rec.getId());
+                cntxt.startActivity(intent);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
