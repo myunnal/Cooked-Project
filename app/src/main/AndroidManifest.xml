@@ -13,6 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cookinti">
         <activity
+            android:name=".RecipeCreationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_recipe_creation"
+            android:theme="@style/Theme.Cookinti.NoActionBar" />
+        <activity
+            android:name=".CreateRecipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
