@@ -63,7 +63,7 @@ public class Recipe {
 
     public String getIngredients() { return this.ingredients; }
 
-    public void setSteps(@NonNull String name) { this.ingredients = steps; }
+    public void setSteps(@NonNull String name) { this.steps = name; }
 
     public String getSteps() { return this.steps; }
 

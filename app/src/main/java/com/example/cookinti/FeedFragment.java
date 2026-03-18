@@ -94,25 +94,25 @@ public class FeedFragment extends Fragment {
         recipe.setName("Kotletas");
         recipe.setDescription("Lorem ipsum. Pasikepi ant keptuves.");
         recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
+        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
-        recipe.setSteps("0");
+        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
         db.recipeDao().insert(recipe);
 
         recipe.setName("Pyragas");
         recipe.setDescription("Sveiti i orkaite.");
         recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
+        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
-        recipe.setSteps("0");
+        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
         db.recipeDao().insert(recipe);
 
         recipe.setName("Pjaustyti pomidorai");
         recipe.setDescription("Pirma reikia paimti i ranka peili");
         recipe.setFk_userid(uid);
-        recipe.setIngredients("0");
+        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
-        recipe.setSteps("0");
+        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
         db.recipeDao().insert(recipe);
     }
 }
