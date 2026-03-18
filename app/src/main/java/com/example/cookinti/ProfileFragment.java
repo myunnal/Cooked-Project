@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openPage = new Intent(getContext(), CreateRecipeActivity.class);
+                Intent openPage = new Intent(getContext(), RecipeCreationActivity.class);
                 startActivity(openPage);
             }
         });
