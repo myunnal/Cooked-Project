@@ -25,6 +25,7 @@ public class AppActivity extends Application {
 
         User user = new User();
         user.setUsername("špygelis");
+        user.setPronouns("He/Him");
         user.setBio("who up jav'ing their kotlin");
         db.userDao().insert(user);
 
