@@ -16,6 +16,10 @@ public class User {
     private String username;
 
     @NonNull
+    @ColumnInfo(name = "password")
+    private String password;
+
+    @NonNull
     @ColumnInfo(name = "pronouns")
     private String pronouns;
 
@@ -33,6 +37,10 @@ public class User {
     public void setUsername(@NonNull String user) { this.username = user; }
 
     public String getUsername() { return this.username; }
+
+    public void setPassword(@NonNull String pass) { this.password = pass; }
+
+    public String getPassword() { return this.password; }
 
     public void setPronouns(@NonNull String pronouns) { this.pronouns = pronouns; }
 

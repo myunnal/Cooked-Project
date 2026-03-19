@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FeedFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -62,6 +65,8 @@ public class FeedFragment extends Fragment {
                 "shit","holy", "shit","holy", "shit","holy", "shit","holy",
                 "shit","holy", "shit","holy", "shit"};*/
 
+        //List<String> list = new ArrayList<String>();
+
     }
 
     @Override
@@ -69,7 +74,9 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         recyclerView = view.findViewById(R.id.recycler_view2);
-        RecipeFeedView recipeFeed = new RecipeFeedView(db.recipeDao().getAllRecipes(), db);
+        RecipeFeedView recipeFeed = new RecipeFeedView(
+                db.recipeDao().getUserRecipes(AppActivity.currentSession.getId()), db
+        );
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recipeFeed);

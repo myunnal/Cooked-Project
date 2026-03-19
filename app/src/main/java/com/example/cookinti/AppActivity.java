@@ -4,8 +4,15 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.KeySpec;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+
 public class AppActivity extends Application {
     static AppDatabase db;
+    static User currentSession;
 
     @Override
     public void onCreate(){
@@ -24,7 +31,8 @@ public class AppActivity extends Application {
         db.userDao().deleteAll();
 
         User user = new User();
-        user.setUsername("špygelis");
+        user.setUsername("spygelis");
+        user.setPassword("123");
         user.setPronouns("He/Him");
         user.setBio("who up jav'ing their kotlin");
         db.userDao().insert(user);
@@ -56,4 +64,20 @@ public class AppActivity extends Application {
         recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
         db.recipeDao().insert(recipe);
     }
+
+    /*public static String EncryptPass(String password)
+    {
+        SecretKeyFactory keyFactory = null;
+        try
+        {
+            keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] salt = {0, 0, 0};
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 4096, 256);
+            keyFactory.generateSecret(spec);
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+
+        }
+    }*/
 }
