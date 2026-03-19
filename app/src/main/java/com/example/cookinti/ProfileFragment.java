@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +19,8 @@ import android.widget.Button;
 public class ProfileFragment extends Fragment {
 
     Button createProfileButton;
+    TextView userName;
+    AppDatabase db;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -58,12 +61,17 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        db = AppActivity.getDatabase();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        userName = rootView.findViewById((R.id.UserName));
+        userName.setText(db.userDao().getAllUsers().get(0).getUsername());
 
         createProfileButton = rootView.findViewById(R.id.createProfileButton);
         createProfileButton.setOnClickListener(new View.OnClickListener() {
