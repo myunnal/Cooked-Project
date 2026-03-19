@@ -1,6 +1,7 @@
 package com.example.cookinti;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         // sets the fragment the app starts with
         setCurrentFragment(new FeedFragment());
 
-
+        this.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         // footer things, apparently if-else is better than switch for android
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {

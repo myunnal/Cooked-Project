@@ -18,6 +18,9 @@ public interface RecipeDAO {
     @Query("SELECT * from Recipe ORDER BY id ASC")
     List<Recipe> getAllRecipes();
 
+    @Query("SELECT * from Recipe WHERE Recipe.name LIKE :subStr || '%' ORDER BY id ASC")
+    List<Recipe> searchRecipes(String subStr);
+
     @Query("SELECT * from Recipe WHERE Recipe.id = :search")
     Recipe getRecipe(long search);
 }
