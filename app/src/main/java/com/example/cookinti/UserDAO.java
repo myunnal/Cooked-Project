@@ -20,4 +20,7 @@ public interface UserDAO {
 
     @Query("SELECT * from User WHERE User.id = :search")
     User getUser(long search);
+
+    @Query("SELECT * from User WHERE User.username = :search")
+    User findUsername(String search);
 }

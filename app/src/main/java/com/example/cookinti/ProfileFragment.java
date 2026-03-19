@@ -72,9 +72,9 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         userName = rootView.findViewById(R.id.UserName);
-        userName.setText(db.userDao().getAllUsers().get(0).getUsername());
+        userName.setText(AppActivity.currentSession.getUsername());
         pronouns = rootView.findViewById(R.id.pronouns);
-        pronouns.setText(db.userDao().getAllUsers().get(0).getPronouns());
+        pronouns.setText(AppActivity.currentSession.getPronouns());
 
         createProfileButton = rootView.findViewById(R.id.createProfileButton);
         createProfileButton.setOnClickListener(new View.OnClickListener() {
