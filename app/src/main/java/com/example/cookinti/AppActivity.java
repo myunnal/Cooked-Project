@@ -12,7 +12,7 @@ public class AppActivity extends Application {
         super.onCreate();
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my_app_db")
                 .allowMainThreadQueries().build();
-        SetUpDatabase();
+        //SetUpDatabase();
     }
 
     public static AppDatabase getDatabase() {
