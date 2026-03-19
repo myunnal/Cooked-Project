@@ -55,7 +55,6 @@ public class FeedFragment extends Fragment {
         }
 
         db = AppActivity.getDatabase();
-        SetUpDatabase();
 
 
         /*String[] dataset = {"holy", "shit", "fellas", "holy", "shit","holy",
@@ -69,7 +68,7 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view2);
         RecipeFeedView recipeFeed = new RecipeFeedView(db.recipeDao().getAllRecipes(), db);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -77,42 +76,5 @@ public class FeedFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
-    }
-
-    private void SetUpDatabase()
-    {
-        db.userDao().deleteAll();
-
-        User user = new User();
-        user.setUsername("špygelis");
-        user.setBio("who up jav'ing their kotlin");
-        db.userDao().insert(user);
-
-        long uid = db.userDao().getAllUsers().get(0).getId();
-
-        Recipe recipe = new Recipe();
-        recipe.setName("Kotletas");
-        recipe.setDescription("Lorem ipsum. Pasikepi ant keptuves.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
-
-        recipe.setName("Pyragas");
-        recipe.setDescription("Sveiti i orkaite.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
-
-        recipe.setName("Pjaustyti pomidorai");
-        recipe.setDescription("Pirma reikia paimti i ranka peili");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
     }
 }
