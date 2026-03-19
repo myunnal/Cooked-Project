@@ -84,8 +84,6 @@ public class SearchFragment extends Fragment {
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
-                Toast.makeText(getContext(), "change", Toast.LENGTH_SHORT).show();
-
                 if (TextUtils.isEmpty(searchBar.getText()))
                 {
                     recipeFeed = new RecipeFeedView(
