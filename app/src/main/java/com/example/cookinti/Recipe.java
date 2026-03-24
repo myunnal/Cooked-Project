@@ -38,6 +38,10 @@ public class Recipe {
     @ColumnInfo(name = "steps")
     private String steps;
 
+    @NonNull
+    @ColumnInfo(name = "category")
+    private String category;
+
 
     public void setId(@NonNull long id) { this.id = id; }
 
@@ -66,5 +70,9 @@ public class Recipe {
     public void setSteps(@NonNull String name) { this.steps = name; }
 
     public String getSteps() { return this.steps; }
+
+    public void setCategory(@NonNull String name) { this.category = name; }
+
+    public String getCategory() { return this.category; }
 
 }

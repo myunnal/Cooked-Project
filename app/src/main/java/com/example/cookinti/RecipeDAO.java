@@ -23,4 +23,7 @@ public interface RecipeDAO {
 
     @Query("SELECT * from Recipe WHERE Recipe.id = :search")
     Recipe getRecipe(long search);
+
+    @Query("SELECT * from Recipe WHERE Recipe.category = :category")
+    List<Recipe> getByCategory(String category);
 }

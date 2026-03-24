@@ -1,5 +1,6 @@
 package com.example.cookinti;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,10 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -31,10 +36,12 @@ public class SearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    RecyclerView recyclerView;
+
     EditText searchBar;
-    AppDatabase db;
-    RecipeFeedView recipeFeed;
+
+    Button categoryMeat;
+    Button categoryDessert;
+    Button categorySalad;
 
 
     public SearchFragment() {
@@ -67,47 +74,62 @@ public class SearchFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        db = AppActivity.getDatabase();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        recyclerView = view.findViewById(R.id.recycler_view2);
-        recipeFeed = new RecipeFeedView(db.recipeDao().getAllRecipes(), db);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(recipeFeed);
+        //recyclerView = view.findViewById(R.id.recycler_view2);
 
         searchBar = view.findViewById(R.id.searchBar);
-        searchBar.addTextChangedListener(new TextWatcher() {
+
+        categoryMeat = view.findViewById(R.id.category1);
+        categoryDessert = view.findViewById(R.id.category2);
+        categorySalad = view.findViewById(R.id.category3);
+
+        categoryMeat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void afterTextChanged(Editable editable) {
-                if (TextUtils.isEmpty(searchBar.getText()))
-                {
-                    recipeFeed = new RecipeFeedView(
-                            db.recipeDao().getAllRecipes(), db);
-                    recyclerView.setAdapter(recipeFeed);
-                }
-                else {
-                    recipeFeed = new RecipeFeedView(
-                            db.recipeDao().searchRecipes(searchBar.getText().toString()), db);
-                    recyclerView.setAdapter(recipeFeed);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SearchCategoryActivity.class);
+                intent.putExtra("Category", "Meat");
+                startActivity(intent);
             }
         });
 
+        categoryDessert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SearchCategoryActivity.class);
+                intent.putExtra("Category", "Dessert");
+                startActivity(intent);
+            }
+        });
+
+        categorySalad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SearchCategoryActivity.class);
+                intent.putExtra("Category", "Salad");
+                startActivity(intent);
+            }
+        });
+
+
+        searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                boolean handled = false;
+                if (i == EditorInfo.IME_ACTION_SEND) {
+                    Intent intent = new Intent(getContext(), SearchActivity.class);
+                    intent.putExtra("Search", searchBar.getText().toString());
+                    startActivity(intent);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }

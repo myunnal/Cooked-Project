@@ -38,6 +38,7 @@ public class AppActivity extends Application {
         recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
         recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
+        recipe.setCategory("Meat");
         db.recipeDao().insert(recipe);
 
         recipe.setName("Pyragas");
@@ -46,6 +47,7 @@ public class AppActivity extends Application {
         recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
         recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
+        recipe.setCategory("Dessert");
         db.recipeDao().insert(recipe);
 
         recipe.setName("Pjaustyti pomidorai");
@@ -54,6 +56,16 @@ public class AppActivity extends Application {
         recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
         recipe.setImageLink("0");
         recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
+        recipe.setCategory("Salad");
+        db.recipeDao().insert(recipe);
+
+        recipe.setName("Cezario salotos");
+        recipe.setDescription("Vista ir salotos mm mm mm");
+        recipe.setFk_userid(uid);
+        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
+        recipe.setImageLink("0");
+        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
+        recipe.setCategory("Salad");
         db.recipeDao().insert(recipe);
     }
 }
