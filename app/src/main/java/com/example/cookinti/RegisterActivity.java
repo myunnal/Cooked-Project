@@ -76,9 +76,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                 db.userDao().insert(newUser);
 
+                AppActivity.currentSession = newUser;
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                AppActivity.currentSession = attempt;
+
                 return;
 
             }

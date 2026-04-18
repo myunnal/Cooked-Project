@@ -68,7 +68,7 @@ public class RecipeCreationActivity extends AppCompatActivity {
                 JSONArray stepsArray = new JSONArray(list2);
                 String steps = stepsArray.toString();
 
-                long userId = db.userDao().getAllUsers().get(0).getId();
+                long userId = AppActivity.currentSession.getId();
 
                 if(TextUtils.isEmpty(steps) || list.isEmpty() || list2.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "There are empty fields", Toast.LENGTH_SHORT).show();
