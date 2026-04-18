@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
         private final TextView authorText;
         private final TextView descriptionText;
         private final ImageView imageView;
+        private final ImageButton favButton;
 
         public ViewHolder(View view) {
             super(view);
@@ -37,6 +39,38 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
             authorText = (TextView) view.findViewById(R.id.authorText);
             descriptionText = (TextView) view.findViewById(R.id.descriptionText);
             imageView = (ImageView) view.findViewById(R.id.recipeImage);
+            favButton = (ImageButton) view.findViewById(R.id.fav);
+        }
+
+        public void SetUpRecipeFeedView(long recipeId, AppDatabase db)
+        {
+            Context cntxt = getImageView().getContext();
+
+            getAuthorText().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppActivity.CheckUserProfile(cntxt, recipeId);
+                }
+            });
+
+            SetVisuals(cntxt, db, recipeId);
+
+            getFavourite().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), recipeId);
+                    SetVisuals(cntxt, db, recipeId);
+                }
+            });
+        }
+
+        public void SetVisuals(Context cntxt, AppDatabase db, long recipeId)
+        {
+            Boolean notFavourite = db.favouriteDao().isFavourite(AppActivity.currentSession.getId(), recipeId).isEmpty();
+            if (!notFavourite)
+                getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_filled));
+            else
+                getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_empty));
         }
 
         public TextView getTextView() {
@@ -53,7 +87,12 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
         public ImageView getImageView() {
             return imageView;
         }
+        public ImageView getFavourite() {
+            return favButton;
+        }
     }
+
+
 
     /**
      * Initialize the dataset of the Adapter
@@ -99,6 +138,27 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
                 Intent intent = new Intent(cntxt, RecipeActivity.class);
                 intent.putExtra("RecipeId", rec.getId());
                 cntxt.startActivity(intent);
+            }
+        });
+
+        viewHolder.getAuthorText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppActivity.CheckUserProfile(cntxt, rec.getFk_userid());
+            }
+        });
+
+        Boolean notFavourite = db.favouriteDao().isFavourite(AppActivity.currentSession.getId(), rec.getId()).isEmpty();
+        if (!notFavourite)
+            viewHolder.getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_filled));
+        else
+            viewHolder.getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_empty));
+
+        viewHolder.getFavourite().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), rec.getId());
+                notifyItemChanged(viewHolder.getAdapterPosition());
             }
         });
     }

@@ -73,11 +73,11 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
-        recyclerView = view.findViewById(R.id.recycler_view2);
-        RecipeFeedView recipeFeed = new RecipeFeedView(
-                db.recipeDao().getUserRecipes(AppActivity.currentSession.getId()), db
-        );
 
+        List<Recipe> recipes = db.recipeDao().getFollowingRecipes(AppActivity.currentSession.getId());
+
+        recyclerView = view.findViewById(R.id.recycler_view2);
+        RecipeFeedView recipeFeed = new RecipeFeedView(recipes, db);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recipeFeed);
 
