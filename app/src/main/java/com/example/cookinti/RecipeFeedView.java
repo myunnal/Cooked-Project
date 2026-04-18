@@ -42,24 +42,24 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
             favButton = (ImageButton) view.findViewById(R.id.fav);
         }
 
-        public void SetUpRecipeFeedView(long recipeId, AppDatabase db)
+        public void SetUpRecipeFeedView(Recipe recipe, AppDatabase db)
         {
             Context cntxt = getImageView().getContext();
 
             getAuthorText().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AppActivity.CheckUserProfile(cntxt, recipeId);
+                    AppActivity.CheckUserProfile(cntxt, recipe.getFk_userid());
                 }
             });
 
-            SetVisuals(cntxt, db, recipeId);
+            SetVisuals(cntxt, db, recipe.getId());
 
             getFavourite().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), recipeId);
-                    SetVisuals(cntxt, db, recipeId);
+                    AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), recipe.getId());
+                    SetVisuals(cntxt, db, recipe.getId());
                 }
             });
         }
