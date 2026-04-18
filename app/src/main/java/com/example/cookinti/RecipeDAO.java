@@ -25,6 +25,10 @@ public interface RecipeDAO {
             " WHERE Recipe.fk_userid = Follow.fk_toid ORDER BY id ASC")
     List<Recipe> getFollowingRecipes(long userid);
 
+    @Query("SELECT * from Recipe INNER JOIN Favourite ON Favourite.fk_userid = :userid" +
+            " WHERE Recipe.id = Favourite.fk_recipeid ORDER BY id ASC")
+    List<Recipe> getFavouriteRecipes(long userid);
+
     @Query("SELECT * from Recipe WHERE Recipe.name LIKE :subStr || '%' ORDER BY id ASC")
     List<Recipe> searchRecipes(String subStr);
 

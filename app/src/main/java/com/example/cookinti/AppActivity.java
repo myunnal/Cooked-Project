@@ -1,6 +1,8 @@
 package com.example.cookinti;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 
 import androidx.room.Room;
 
@@ -87,4 +89,24 @@ public class AppActivity extends Application {
 
         }
     }*/
+
+    public static void FavouriteRecipe(long userid, long recipeid)
+    {
+        Boolean notFavourite = db.favouriteDao().isFavourite(userid, recipeid).isEmpty();
+        if (notFavourite)
+        {
+            db.favouriteDao().insert(new Favourite(userid, recipeid));
+        }
+        else
+        {
+            db.favouriteDao().removeFavourite(userid, recipeid);
+        }
+    }
+
+    public static void CheckUserProfile(Context cntxt, long userid)
+    {
+        Intent intent = new Intent(cntxt, UserRecipes.class);
+        intent.putExtra("userid", userid);
+        cntxt.startActivity(intent);
+    }
 }

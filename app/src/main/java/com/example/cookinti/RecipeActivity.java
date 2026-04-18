@@ -49,6 +49,8 @@ public class RecipeActivity extends AppCompatActivity {
         String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
         recipeHolder.getAuthorText().setText(userName);
 
+        recipeHolder.SetUpRecipeFeedView(rec.getId(), db);
+
 
         //String[] ingredients = {"Salota", "Morka", "Bananas", "Cepelinai"};
         LinearLayout ingredientLayout = findViewById(R.id.ingredientLayout);
