@@ -21,6 +21,7 @@ public class ProfileFragment extends Fragment {
     Button createProfileButton;
     TextView userName;
     TextView pronouns;
+    TextView followers;
     AppDatabase db;
 
 
@@ -75,6 +76,8 @@ public class ProfileFragment extends Fragment {
         userName.setText(AppActivity.currentSession.getUsername());
         pronouns = rootView.findViewById(R.id.pronouns);
         pronouns.setText(AppActivity.currentSession.getPronouns());
+        followers = rootView.findViewById(R.id.followers);
+        followers.setText("Followers: " + db.followDao().getFollowers(AppActivity.currentSession.getId()).size());
 
         createProfileButton = rootView.findViewById(R.id.createProfileButton);
         createProfileButton.setOnClickListener(new View.OnClickListener() {

@@ -31,10 +31,17 @@ public class AppActivity extends Application {
         db.userDao().deleteAll();
 
         User user = new User();
-        user.setUsername("spygelis");
-        user.setPassword("123");
+        user.setUsername("admin");
+        user.setPassword("admin");
         user.setPronouns("He/Him");
         user.setBio("who up jav'ing their kotlin");
+        db.userDao().insert(user);
+
+        user = new User();
+        user.setUsername("345");
+        user.setPassword("345");
+        user.setPronouns("She/Her");
+        user.setBio("am 3:45");
         db.userDao().insert(user);
 
         long uid = db.userDao().getAllUsers().get(0).getId();

@@ -101,6 +101,15 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
                 cntxt.startActivity(intent);
             }
         });
+
+        viewHolder.getAuthorText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(cntxt, UserRecipes.class);
+                intent.putExtra("userid", rec.getFk_userid());
+                cntxt.startActivity(intent);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
