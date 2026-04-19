@@ -5,79 +5,99 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/off_white"
     tools:context=".RecipeActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/back"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/recipeField"
-            layout="@layout/text_row_item"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium" />
-
-        <TextView
-            android:id="@+id/ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ingredients"
-            android:textAlignment="center"
-            android:textSize="28sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
         <LinearLayout
-            android:id="@+id/ingredientLayout"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:minHeight="30dp"
-            android:orientation="vertical">
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+
+            android:orientation="vertical"
+            >
+            <include
+                android:id="@+id/recipeField"
+                layout="@layout/text_row_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginRight="@dimen/margin_medium" />
+
+            <TextView
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingredients"
+                android:textAlignment="center"
+                android:textSize="28sp"
+                />
+
+            <LinearLayout
+                android:id="@+id/ingredientLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:minHeight="30dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/steps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cooking Steps"
-            android:textAlignment="center"
-            android:textSize="28sp" />
 
-        <LinearLayout
-            android:id="@+id/stepsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:minHeight="30dp"
-            android:orientation="vertical"></LinearLayout>
 
-    </LinearLayout>
+
+    </ScrollView>
+
 
     <Button
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="300dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+
+    />
+
+    <CheckBox
+        android:id="@+id/hands_free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hands-Free Mode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/make_recipe"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/make_recipe"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/make_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="Make Recipe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

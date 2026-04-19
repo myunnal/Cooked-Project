@@ -29,6 +29,17 @@ public class User {
     @ColumnInfo(name = "pfp")
     private String pfpLink;
 
+    public User() {
+    }
+
+    public User(@NonNull String username, @NonNull String password, @NonNull String pronouns,
+                String bio, String pfpLink) {
+        this.username = username;
+        this.password = password;
+        this.pronouns = pronouns;
+        this.bio = bio;
+        this.pfpLink = pfpLink;
+    }
 
     public void setId(@NonNull long id) { this.id = id; }
 

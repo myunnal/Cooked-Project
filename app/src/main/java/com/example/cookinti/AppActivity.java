@@ -21,7 +21,7 @@ public class AppActivity extends Application {
         super.onCreate();
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my_app_db")
                 .allowMainThreadQueries().build();
-        //SetUpDatabase();
+        SetUpDatabase(); //uncommented for testing
     }
 
     public static AppDatabase getDatabase() {
@@ -32,46 +32,60 @@ public class AppActivity extends Application {
     {
         db.userDao().deleteAll();
 
-        User user = new User();
-        user.setUsername("admin");
-        user.setPassword("admin");
-        user.setPronouns("He/Him");
-        user.setBio("who up jav'ing their kotlin");
-        db.userDao().insert(user);
+        // refactored to use constructor
+        db.userDao().insert(new User(
+                "admin",
+                "admin",
+                "He/Him",
+                "who up jav'ing their kotlin",
+                null
+        ));
 
-        user = new User();
-        user.setUsername("345");
-        user.setPassword("345");
-        user.setPronouns("She/Her");
-        user.setBio("am 3:45");
-        db.userDao().insert(user);
+        db.userDao().insert(new User(
+                "345",
+                "345",
+                "She/Her",
+                "am 3:45",
+                null
+        ));
 
         long uid = db.userDao().getAllUsers().get(0).getId();
 
-        Recipe recipe = new Recipe();
-        recipe.setName("Kotletas");
-        recipe.setDescription("Lorem ipsum. Pasikepi ant keptuves.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
+        // refactored to use constructor
+        db.recipeDao().insert(new Recipe(
+                uid,
+                "Tradiciniai kotletai",
+                "0",
+                "Klasikinis patiekalas, kuris niekada nenuvilia! Tobulai subalansuotas skonis, auksinė plutelė ir gardus aromatas sugrąžins į vaikystės pietus. Puikiai tinka su bulvių koše, daržovėmis ar mėgstamu padažu. Išbandykite šį laiko patikrintą receptą ir mėgaukitės naminiu jaukumu! Ugnė",
+                "[\"400 gramų kiaulienos faršo \"," +
+                        "\"400 gramų maltos kalakutienos (arba vištienos) \"," +
+                        "\"2 vienetai kiaušinių \"," +
+                        "\"0.5 vieneto svogūnųi\"]",
+                "[\"Susmulkinkite česnako skilteles bei svogūną. Pamerkite vandenyje (galima ir piene) baltos duonos riekeles.\"," +
+                        "\"Į dubenį sudėkite kiaulienos bei kalakutienos faršą, suberkite prieskonius, dėkite majonezą, įmuškite kiaušinius, suberkite česnaką, svogūną, sudėkite nuspaustas baltos duonos riekeles, viską gerai išminkykite.\","+
+                        "\"Kepkite keptuvėje iš abiejų pusių, kol gražiai parus.\"]",
+                ""
+        ));
 
-        recipe.setName("Pyragas");
-        recipe.setDescription("Sveiti i orkaite.");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
+        db.recipeDao().insert(new Recipe(
+                uid,
+                "Pyragas",
+                "0",
+                "Sveiti i orkaite.",
+                "[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]",
+                "[\"Pjauti\",\"Kepti\"]",
+                ""
+        ));
 
-        recipe.setName("Pjaustyti pomidorai");
-        recipe.setDescription("Pirma reikia paimti i ranka peili");
-        recipe.setFk_userid(uid);
-        recipe.setIngredients("[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]");
-        recipe.setImageLink("0");
-        recipe.setSteps("[\"Pjauti\",\"Kepti\"]");
-        db.recipeDao().insert(recipe);
+        db.recipeDao().insert(new Recipe(
+                uid,
+                "Pjaustyti pomidorai",
+                "0",
+                "Pirma reikia paimti i ranka peili",
+                "[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]",
+                "[\"Pjauti\",\"Kepti\"]",
+                ""
+        ));
     }
 
     /*public static String EncryptPass(String password)

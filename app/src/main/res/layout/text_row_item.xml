@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_medium"
     android:layout_marginRight="@dimen/margin_medium"
     android:gravity="center_vertical"
@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/recipeImage"
         android:layout_width="match_parent"
-        android:layout_height="310dp"
+        android:layout_height="320dp"
         android:background="#140E0E"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
@@ -19,33 +19,36 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/Linear"
             android:layout_width="0dp"
-            android:layout_height="86dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0"
             android:gravity="left"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fav"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/recipeImage"
+            tools:ignore="NotSibling">
 
             <TextView
                 android:id="@+id/recipeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/element_text"
-                android:textSize="24sp" />
+                android:textSize="28sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/authorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/burgundy"
                 android:text="@string/element_text"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/descriptionText"
@@ -53,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:text="@string/element_text"
-                android:textSize="16sp" />
+                android:textSize="20sp"
+                />
 
         </LinearLayout>
 
@@ -65,12 +69,13 @@
             android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
             android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/Linear"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:srcCompat="@drawable/fav_empty" />
+            app:layout_constraintTop_toBottomOf="@+id/recipeImage"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/fav_empty"
+            tools:ignore="NotSibling" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
