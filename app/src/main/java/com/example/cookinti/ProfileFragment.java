@@ -1,14 +1,20 @@
 package com.example.cookinti;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -18,10 +24,13 @@ import android.widget.TextView;
  */
 public class ProfileFragment extends Fragment {
 
+    ImageView profileImage;
+    Uri profileLink;
     Button createProfileButton;
     TextView userName;
     TextView pronouns;
     TextView followers;
+    TextView following;
     AppDatabase db;
 
 
@@ -78,6 +87,10 @@ public class ProfileFragment extends Fragment {
         pronouns.setText(AppActivity.currentSession.getPronouns());
         followers = rootView.findViewById(R.id.followers);
         followers.setText("Followers: " + db.followDao().getFollowers(AppActivity.currentSession.getId()).size());
+        following = rootView.findViewById(R.id.following);
+        followers.setText("Following: " + db.followDao().getFollowing(AppActivity.currentSession.getId()).size());
+
+
 
         createProfileButton = rootView.findViewById(R.id.createProfileButton);
         createProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +100,44 @@ public class ProfileFragment extends Fragment {
                 startActivity(openPage);
             }
         });
+
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                        int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        getContext().getContentResolver().takePersistableUriPermission(uri, flag);
+
+                        profileLink = uri;
+                        profileImage.setImageURI(uri);
+
+                        AppActivity.currentSession.setPfpLink(uri.toString());
+                        db.userDao().updateImage(AppActivity.currentSession.getId(), uri.toString());
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+        profileImage = (ImageView) rootView.findViewById(R.id.profileImage);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+            }
+        });
+
+        Uri uri;
+        if (AppActivity.currentSession.getPfpLink() != null) {
+            uri = Uri.parse(AppActivity.currentSession.getPfpLink());
+            if (uri != null)
+                profileImage.setImageURI(uri);
+            else
+                profileImage.setImageResource(R.drawable.basically_burger_1);
+        }
 
         return rootView;
     }

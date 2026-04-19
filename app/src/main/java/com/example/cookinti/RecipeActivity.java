@@ -3,6 +3,7 @@ package com.example.cookinti;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +45,15 @@ public class RecipeActivity extends AppCompatActivity {
         Recipe rec = db.recipeDao().getRecipe(getIntent().getExtras().getLong("RecipeId"));
         recipeHolder.getTextView().setText(rec.getName());
         recipeHolder.getDescriptionText().setText(rec.getDescription());
-        recipeHolder.getImageView().setImageResource(R.drawable.basically_burger_1);
+
+        Uri uri;
+        if (rec.getImageLink() != null) {
+            uri = Uri.parse(rec.getImageLink());
+            if (uri != null)
+                recipeHolder.getImageView().setImageURI(uri);
+            else
+                recipeHolder.getImageView().setImageResource(R.drawable.basically_burger_1);
+        }
 
         String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
         recipeHolder.getAuthorText().setText(userName);

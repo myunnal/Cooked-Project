@@ -1,13 +1,19 @@
 package com.example.cookinti;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +43,11 @@ public class RecipeCreationActivity extends AppCompatActivity {
     private TextView addIngredient;
     private TextView addRecipeStep;
 
+    ImageView imageView;
+    Uri imageLink;
+    int SELECT_PICTURE = 200;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +55,7 @@ public class RecipeCreationActivity extends AppCompatActivity {
         binding = ActivityRecipeCreationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         db = AppActivity.getDatabase();
+
         backButton = (ImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +89,7 @@ public class RecipeCreationActivity extends AppCompatActivity {
                     recipe.setIngredients(ingredients);
                     recipe.setSteps(steps);
                     recipe.setDescription("Labai Skanu");
-                    recipe.setImageLink("cia linkas");
+                    recipe.setImageLink(imageLink.toString());
                     recipe.setFk_userid(userId);
 
                     db.recipeDao().insert(recipe);
@@ -104,6 +116,33 @@ public class RecipeCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addRecipeStepRow();
+            }
+        });
+
+
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                        int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                        getContentResolver().takePersistableUriPermission(uri, flag);
+
+                        imageLink = uri;
+                        imageView.setImageURI(uri);
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
             }
         });
     }
@@ -176,4 +215,5 @@ public class RecipeCreationActivity extends AppCompatActivity {
         }
         return recipeStepList;
     }
+
 }

@@ -23,4 +23,7 @@ public interface UserDAO {
 
     @Query("SELECT * from User WHERE User.username = :search")
     User findUsername(String search);
+
+    @Query("UPDATE User SET pfp = :newImage WHERE id = :userid")
+    void updateImage(long userid, String newImage);
 }

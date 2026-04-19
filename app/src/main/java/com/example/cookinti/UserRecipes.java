@@ -2,13 +2,17 @@ package com.example.cookinti;
 
 import static androidx.constraintlayout.widget.ConstraintSet.INVISIBLE;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -30,6 +34,8 @@ public class UserRecipes extends AppCompatActivity {
     AppDatabase db;
     Button follow;
 
+    ImageView profileImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +53,10 @@ public class UserRecipes extends AppCompatActivity {
         followers = findViewById(R.id.followers);
         userName = findViewById(R.id.UserName);
         userid = getIntent().getExtras().getLong("userid");
+        profileImage = (ImageView) findViewById(R.id.profileImage);
 
         DisplayUser();
+
 
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,15 @@ public class UserRecipes extends AppCompatActivity {
 
         User user = db.userDao().getUser(userid);
         userName.setText(user.getUsername());
+
+        Uri uri;
+        if (user.getPfpLink() != null) {
+            uri = Uri.parse(user.getPfpLink());
+            if (uri != null)
+                profileImage.setImageURI(uri);
+            else
+                profileImage.setImageResource(R.drawable.basically_burger_1);
+        }
     }
 
 }

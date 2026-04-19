@@ -1,7 +1,5 @@
 package com.example.cookinti;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHolder> {
+public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecyclerView.ViewHolder> {
 
     private AppDatabase db;
     private List<Recipe> recipes;
@@ -101,7 +99,7 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
      */
-    public RecipeFeedView(List<Recipe> dataSet, AppDatabase database)
+    public FollowersRecyclerView(List<Recipe> dataSet, AppDatabase database)
     {
         recipes = dataSet;
         db = database;
