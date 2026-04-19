@@ -76,9 +76,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                 db.userDao().insert(newUser);
 
-                AppActivity.currentSession = newUser;
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                attempt = db.userDao().findUsername(userText.getText().toString());
+                if (attempt != null)
+                {
+                    if (attempt.getPassword().equals(pass1.getText().toString()))
+                    {
+                        AppActivity.currentSession = attempt;
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        return;
+                    }
+                }
 
                 return;
 

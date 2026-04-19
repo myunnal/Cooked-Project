@@ -103,6 +103,19 @@ public class AppActivity extends Application {
         }
     }
 
+    public static void FollowUser(long userid, long targetid)
+    {
+        Boolean notFollowing = db.followDao().isFollowing(userid, targetid).isEmpty();
+        if (notFollowing)
+        {
+            db.followDao().insert(new Follow(userid, targetid));
+        }
+        else
+        {
+            db.followDao().removeFollow(userid, targetid);
+        }
+    }
+
     public static void CheckUserProfile(Context cntxt, long userid)
     {
         Intent intent = new Intent(cntxt, UserRecipes.class);

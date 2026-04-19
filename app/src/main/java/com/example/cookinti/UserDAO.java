@@ -18,6 +18,10 @@ public interface UserDAO {
     @Query("SELECT * from User ORDER BY id ASC")
     List<User> getAllUsers();
 
+    @Query("SELECT * from User INNER JOIN Follow ON Follow.fk_fromid = :userid" +
+            " WHERE Follow.fk_toid = User.id ORDER BY id ASC")
+    List<User> getFollowedUsers(long userid);
+
     @Query("SELECT * from User WHERE User.id = :search")
     User getUser(long search);
 

@@ -87,10 +87,16 @@ public class ProfileFragment extends Fragment {
         pronouns.setText(AppActivity.currentSession.getPronouns());
         followers = rootView.findViewById(R.id.followers);
         followers.setText("Followers: " + db.followDao().getFollowers(AppActivity.currentSession.getId()).size());
+
         following = rootView.findViewById(R.id.following);
-        followers.setText("Following: " + db.followDao().getFollowing(AppActivity.currentSession.getId()).size());
-
-
+        following.setText("Following: " + db.followDao().getFollowing(AppActivity.currentSession.getId()).size());
+        following.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), FollowersListActivity.class);
+                startActivity(i);
+            }
+        });
 
         createProfileButton = rootView.findViewById(R.id.createProfileButton);
         createProfileButton.setOnClickListener(new View.OnClickListener() {
