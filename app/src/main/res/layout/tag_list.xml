@@ -7,19 +7,18 @@
     android:padding="4dp">
 
     <EditText
-        android:id="@+id/recipeStep"
+        android:id="@+id/tagName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="e.g. Melt butter"
+        android:hint="e.g. Snack"
         android:background="@android:color/transparent"
         android:padding="8dp"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/butttonRemoveRecipeStep"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:id="@+id/butttonRemoveTag"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
-
 </LinearLayout>

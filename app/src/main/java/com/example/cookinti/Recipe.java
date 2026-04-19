@@ -38,6 +38,22 @@ public class Recipe {
     @ColumnInfo(name = "steps")
     private String steps;
 
+    @ColumnInfo(name = "tags")
+    private String tags;
+
+    public Recipe() {
+    }
+
+    public Recipe(long fk_userid, @NonNull String name, String imageLink,
+                  String description, String ingredients, String steps, String tags) {
+        this.fk_userid = fk_userid;
+        this.name = name;
+        this.imageLink = imageLink;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.tags = tags;
+    }
 
     public void setId(@NonNull long id) { this.id = id; }
 
@@ -67,4 +83,7 @@ public class Recipe {
 
     public String getSteps() { return this.steps; }
 
+    public void setTags(@NonNull String tags) { this.tags = tags; }
+
+    public String getTags() { return this.tags; }
 }

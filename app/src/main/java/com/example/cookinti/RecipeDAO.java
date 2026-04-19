@@ -29,7 +29,7 @@ public interface RecipeDAO {
             " WHERE Recipe.id = Favourite.fk_recipeid ORDER BY id ASC")
     List<Recipe> getFavouriteRecipes(long userid);
 
-    @Query("SELECT * from Recipe WHERE Recipe.name LIKE :subStr || '%' ORDER BY id ASC")
+    @Query("SELECT * from Recipe WHERE Recipe.name OR Recipe.tags LIKE :subStr || '%' ORDER BY id ASC")
     List<Recipe> searchRecipes(String subStr);
 
     @Query("SELECT * from Recipe WHERE Recipe.id = :search")

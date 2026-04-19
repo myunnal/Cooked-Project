@@ -37,11 +37,15 @@ public class RecipeCreationActivity extends AppCompatActivity {
     Button uploadRecipeButton;
     AppDatabase db;
     EditText recipeNameEditText;
+    EditText recipeDescriptionEditText;
+
     private LinearLayout ingredientContainer;
     private LinearLayout recipeStepContainer;
+    private LinearLayout tagContainer;
 
     private TextView addIngredient;
     private TextView addRecipeStep;
+    private TextView addTag;
 
     ImageView imageView;
     Uri imageLink;
@@ -65,12 +69,14 @@ public class RecipeCreationActivity extends AppCompatActivity {
         });
 
         recipeNameEditText = (EditText) findViewById(R.id.RecipeNameEditText);
+        recipeDescriptionEditText = (EditText) findViewById(R.id.recipeDescriptionEditText);
         uploadRecipeButton = (Button) findViewById(R.id.uploadRecipeButton);
         uploadRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Recipe recipe = new Recipe();
                 String recipeName = recipeNameEditText.getText().toString().trim();
+                String recipeDescription = recipeDescriptionEditText.getText().toString().trim();
 
                 List<String> list = IngredientList();
                 JSONArray ingredientsArray = new JSONArray(list);
@@ -88,9 +94,10 @@ public class RecipeCreationActivity extends AppCompatActivity {
                     recipe.setName(recipeName);
                     recipe.setIngredients(ingredients);
                     recipe.setSteps(steps);
-                    recipe.setDescription("Labai Skanu");
+                    recipe.setDescription(recipeDescription);
                     recipe.setImageLink(imageLink.toString());
                     recipe.setFk_userid(userId);
+                    recipe.setTags(tagString());
 
                     db.recipeDao().insert(recipe);
                     Toast.makeText(getApplicationContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
@@ -118,6 +125,17 @@ public class RecipeCreationActivity extends AppCompatActivity {
                 addRecipeStepRow();
             }
         });
+
+        tagContainer = findViewById(R.id.tagListContainer);
+        addTag = findViewById(R.id.addTag);
+
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTagRow();
+            }
+        });
+
 
 
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -180,6 +198,22 @@ public class RecipeCreationActivity extends AppCompatActivity {
 
     }
 
+    private void addTagRow() {
+
+        View tagRow = getLayoutInflater().inflate(R.layout.tag_list, null);
+        ImageView butttonRemove = tagRow.findViewById(R.id.butttonRemoveTag);
+
+        butttonRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tagContainer.removeView(tagRow);
+            }
+        });
+
+        tagContainer.addView(tagRow);
+
+    }
+
     private List<String>IngredientList() {
         List<String> ingredientList = new ArrayList<>();
         for (int i = 0; i < ingredientContainer.getChildCount(); i++) {
@@ -214,6 +248,30 @@ public class RecipeCreationActivity extends AppCompatActivity {
             }
         }
         return recipeStepList;
+    }
+
+    private List<String>TagList() {
+        List<String> tagList = new ArrayList<>();
+        for (int i = 0; i < recipeStepContainer.getChildCount(); i++) {
+            View row = recipeStepContainer.getChildAt(i);
+
+            EditText input = row.findViewById(R.id.recipeStep);
+            String value = input.getText().toString().trim();
+
+            if (!value.isEmpty()) {
+                tagList.add(value);
+            } // check needed for one word
+        }
+        return tagList;
+    }
+
+    private String tagString(){
+        StringBuilder sb = new StringBuilder();
+        List<String> tagList = TagList();
+        for(String s : tagList){
+            sb.append(s.toLowerCase());
+        }
+        return sb.toString();
     }
 
 }

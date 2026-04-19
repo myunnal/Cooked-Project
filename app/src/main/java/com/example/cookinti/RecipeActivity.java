@@ -63,12 +63,12 @@ public class RecipeActivity extends AppCompatActivity {
 
         //String[] ingredients = {"Salota", "Morka", "Bananas", "Cepelinai"};
         LinearLayout ingredientLayout = findViewById(R.id.ingredientLayout);
-        LinearLayout stepLayout = findViewById(R.id.stepsLayout);
+        //LinearLayout stepLayout = findViewById(R.id.stepsLayout);
 
         Log.d("JSON", rec.getIngredients());
 
         PopulateLayout(rec.getIngredients(), ingredientLayout);
-        PopulateLayout(rec.getSteps(), stepLayout);
+        //PopulateLayout(rec.getSteps(), stepLayout);
 
         Button back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -77,33 +77,70 @@ public class RecipeActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button makeRecipe = findViewById(R.id.make_recipe);
+        makeRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), RecipePagerActivity.class);
+                intent.putExtra("RecipeId", getIntent().getExtras().getLong("RecipeId"));
+                startActivity(intent);
+            }
+        });
     }
 
     void PopulateLayout(String jsonString, LinearLayout layout)
     {
-        JSONArray array;
+//        JSONArray array;
+//        try {
+//            array = new JSONArray(jsonString);
+//            array = new JSONArray(array.toString()); // galima automatizuoti
+//
+//            Log.d("JSON", array.toString());
+//
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        for (int i = 0; i < array.length(); i++) {
+//            Object row = null;
+//            try {
+//                row = array.get(i);
+//
+//                TextView newText = new TextView(this);
+//                newText.setText(row.toString());
+//                layout.addView(newText);
+//
+//            } catch (JSONException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+        if (jsonString == null || jsonString.isEmpty()) return;
+
         try {
-            array = new JSONArray(jsonString);
-            array = new JSONArray(array.toString()); // galima automatizuoti
+            // Clean the string if it was wrapped in extra quotes by a database export
+            if (jsonString.startsWith("\"") && jsonString.endsWith("\"")) {
+                jsonString = jsonString.substring(1, jsonString.length() - 1).replace("\\\"", "\"");
+            }
 
-            Log.d("JSON", array.toString());
+            JSONArray array = new JSONArray(jsonString);
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (int i = 0; i < array.length(); i++) {
-            Object row = null;
-            try {
-                row = array.get(i);
+            for (int i = 0; i < array.length(); i++) {
+                // Use optString to avoid potential null pointer/json exceptions for specific indices
+                String stepText = array.optString(i);
 
                 TextView newText = new TextView(this);
-                newText.setText(row.toString());
-                layout.addView(newText);
+                newText.setText(stepText);
 
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+                // Adding some padding for readability in long text
+                newText.setPadding(0, 8, 0, 8);
+                newText.setTextSize(20);
+                layout.addView(newText);
             }
+        } catch (JSONException e) {
+            Log.e("JSON_ERROR", "Failed to parse steps at: " + jsonString);
+            e.printStackTrace();
         }
     }
 }
