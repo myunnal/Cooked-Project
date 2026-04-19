@@ -84,7 +84,7 @@ public class AppActivity extends Application {
                 "Pirma reikia paimti i ranka peili",
                 "[\"Salota\",\"Morka\",\"Bananas\",\"Cepelinai\"]",
                 "[\"Pjauti\",\"Kepti\"]",
-                ""
+                "kandy"
         ));
     }
 
