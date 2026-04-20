@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,14 @@ public class ProfileFragment extends Fragment {
     TextView pronouns;
     TextView followers;
     TextView following;
+
+    TextView descriptionText;
+    EditText descriptionEdit;
+    EditText pronounsEdit;
+
+    Button editProfileButton;
+    Button saveProfileButton;
+
     AppDatabase db;
 
 
@@ -84,12 +93,33 @@ public class ProfileFragment extends Fragment {
         userName = rootView.findViewById(R.id.UserName);
         userName.setText(AppActivity.currentSession.getUsername());
         pronouns = rootView.findViewById(R.id.pronouns);
+        pronounsEdit = rootView.findViewById(R.id.pronounsEdit);
         pronouns.setText(AppActivity.currentSession.getPronouns());
         followers = rootView.findViewById(R.id.followers);
         followers.setText("Followers: " + db.followDao().getFollowers(AppActivity.currentSession.getId()).size());
 
         following = rootView.findViewById(R.id.following);
         following.setText("Following: " + db.followDao().getFollowing(AppActivity.currentSession.getId()).size());
+
+        descriptionText = rootView.findViewById(R.id.descriptionText);
+        descriptionEdit = rootView.findViewById(R.id.descriptionEdit);
+        editProfileButton = rootView.findViewById(R.id.editProfileButton);
+        saveProfileButton = rootView.findViewById(R.id.saveProfileButton);
+        pronouns.setText(AppActivity.currentSession.getPronouns());
+
+        String currentBio = AppActivity.currentSession.getBio();
+
+        String currentPronouns = AppActivity.currentSession.getPronouns();
+        if (currentPronouns == null || currentPronouns.trim().isEmpty()) {
+            currentPronouns = "No pronouns set";
+        }
+
+        pronouns.setText(currentPronouns);
+        if (currentBio == null || currentBio.trim().isEmpty()) {
+            currentBio = "No description yet";
+        }
+        descriptionText.setText(currentBio);
+
         following.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +134,60 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent openPage = new Intent(getContext(), RecipeCreationActivity.class);
                 startActivity(openPage);
+            }
+        });
+
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                descriptionEdit.setText(descriptionText.getText().toString());
+                pronounsEdit.setText(pronouns.getText().toString());
+
+                descriptionText.setVisibility(View.GONE);
+                descriptionEdit.setVisibility(View.VISIBLE);
+
+                pronouns.setVisibility(View.GONE);
+                pronounsEdit.setVisibility(View.VISIBLE);
+
+                editProfileButton.setVisibility(View.GONE);
+                saveProfileButton.setVisibility(View.VISIBLE);
+
+                descriptionEdit.requestFocus();
+            }
+        });
+
+
+        saveProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newDescription = descriptionEdit.getText().toString().trim();
+                String newPronouns = pronounsEdit.getText().toString().trim();
+
+                if (newDescription.isEmpty()) {
+                    newDescription = "No description yet";
+                }
+
+                if (newPronouns.isEmpty()) {
+                    newPronouns = "No pronouns set";
+                }
+
+                descriptionText.setText(newDescription);
+                pronouns.setText(newPronouns);
+
+                descriptionEdit.setVisibility(View.GONE);
+                descriptionText.setVisibility(View.VISIBLE);
+
+                pronounsEdit.setVisibility(View.GONE);
+                pronouns.setVisibility(View.VISIBLE);
+
+                saveProfileButton.setVisibility(View.GONE);
+                editProfileButton.setVisibility(View.VISIBLE);
+
+                AppActivity.currentSession.setBio(newDescription);
+                AppActivity.currentSession.setPronouns(newPronouns);
+
+                db.userDao().updateBio(AppActivity.currentSession.getId(), newDescription);
+                db.userDao().updatePronouns(AppActivity.currentSession.getId(), newPronouns);
             }
         });
 
