@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cookinti">
         <activity
+            android:name=".FavoritesFolderActivity"
+            android:exported="false" />
+        <activity
             android:name=".RecipePagerActivity"
             android:exported="false" />
         <activity

@@ -1,7 +1,9 @@
 package com.example.cookinti;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -21,6 +26,9 @@ public class FavouritesFragment extends Fragment {
 
     AppDatabase db;
     RecyclerView recyclerView;
+    Button addFolder;
+    LinearLayout folderList;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,8 +82,68 @@ public class FavouritesFragment extends Fragment {
         RecipeFeedView recipeFeed = new RecipeFeedView(recipes, db);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recipeFeed);
+        addFolder = view.findViewById(R.id.addFolderButton);
+        folderList = view.findViewById(R.id.folderList);
 
+        addFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShowCreateFolderDialog();
+            }
+        });
+
+
+        LoadFolders();
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void LoadFolders()
+    {
+        folderList.removeAllViews();
+
+        List<FavoritesFolder> folders = db.favoritesFolderDAO()
+                .getFoldersForUser(AppActivity.currentSession.getId());
+
+        for (FavoritesFolder folder : folders)
+        {
+            Button folderButton = new Button(getContext());
+            folderButton.setText(folder.name());
+
+            folderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
+                    intent.putExtra("folderId", folder.getId());
+                    startActivity(intent);
+                }
+            });
+
+            folderList.addView(folderButton);
+        }
+    }
+
+    private void ShowCreateFolderDialog()
+    {
+        EditText input = new EditText(getContext());
+        input.setHint("Folder name");
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Create folder")
+                .setView(input)
+                .setPositiveButton("Create", (dialog, which) -> {
+                    String folderName = input.getText().toString();
+
+                    if (!folderName.isEmpty())
+                    {
+                        db.favoritesFolderDAO().insert(
+                                new FavoritesFolder(AppActivity.currentSession.getId(), folderName)
+                        );
+
+                        LoadFolders();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
