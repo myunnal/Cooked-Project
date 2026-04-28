@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/margin_medium"
-    android:layout_marginRight="@dimen/margin_medium"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <ImageView
         android:id="@+id/recipeImage"
@@ -19,13 +21,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:id="@+id/Linear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="left"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -40,24 +46,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/element_text"
                 android:textSize="28sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/authorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/burgundy"
                 android:text="@string/element_text"
+                android:textColor="@color/burgundy"
                 android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/descriptionText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:ellipsize="end"
-                android:text="@string/element_text"
-                android:textSize="20sp"
-                />
+                android:text="---"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -68,12 +73,15 @@
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:backgroundTint="#00FFFFFF"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:scaleType="fitCenter"
 
+            android:scaleX="1"
+            android:scaleY="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/Linear"
             app:layout_constraintTop_toBottomOf="@+id/recipeImage"
-            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/fav_empty"
             tools:ignore="NotSibling" />
     </androidx.constraintlayout.widget.ConstraintLayout>

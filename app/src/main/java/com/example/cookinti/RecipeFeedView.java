@@ -1,5 +1,6 @@
 package com.example.cookinti;
 
+import static androidx.core.content.ContextCompat.getDrawable;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
@@ -167,6 +168,12 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
             @Override
             public void onClick(View view) {
                 AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), rec.getId());
+
+                if (notFavourite) {
+                    viewHolder.getFavourite().setImageDrawable(getDrawable(cntxt, R.drawable.fav_filled));
+                    Anims.ScaleViewAnim(view).start();
+                }
+
                 notifyItemChanged(viewHolder.getAdapterPosition());
             }
         });

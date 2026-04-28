@@ -95,7 +95,7 @@ public class RecipeCreationActivity extends AppCompatActivity {
                     recipe.setIngredients(ingredients);
                     recipe.setSteps(steps);
                     recipe.setDescription(recipeDescription);
-                    recipe.setImageLink(imageLink.toString());
+                    recipe.setImageLink(imageLink != null ? imageLink.toString() : "");
                     recipe.setFk_userid(userId);
                     recipe.setTags(tagString());
 
