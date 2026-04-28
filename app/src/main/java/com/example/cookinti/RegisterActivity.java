@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Anims.ScaleViewAnim(view, 1.5f).start();
+                Anims.ScaleViewAnim(view, 1.1f).start();
 
                 if (TextUtils.isEmpty(userText.getText()) || TextUtils.isEmpty(email.getText()) ||
                         TextUtils.isEmpty(pass1.getText()) || TextUtils.isEmpty(pass2.getText()))

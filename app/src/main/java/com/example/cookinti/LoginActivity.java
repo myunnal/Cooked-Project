@@ -32,12 +32,15 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText userText = findViewById(R.id.logUser);
         EditText passText = findViewById(R.id.logPassword);
+        View root = findViewById(R.id.main);
 
         Button login = findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 User attempt = db.userDao().findUsername(userText.getText().toString());
+
+                Anims.ScaleViewAnim(view, 1.1f).start();
 
                 if (attempt != null)
                 {
@@ -49,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                 }
+                Anims.Shake(root, 1f).start();
                 Toast.makeText(LoginActivity.this, "incorrect username or password", Toast.LENGTH_SHORT).show();
             }
         });
@@ -57,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
             }
