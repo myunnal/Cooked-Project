@@ -1,9 +1,11 @@
 package com.example.cookinti;
 
+import static androidx.core.content.ContextCompat.getDrawable;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +74,11 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
                 getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_filled));
             else
                 getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_empty));
+
+            if (!notFavourite) {
+                //getFavourite().setImageDrawable(getDrawable(cntxt, R.drawable.fav_filled));
+                Anims.ScaleViewAnim(getFavourite()).start();
+            }
         }
 
         public TextView getTextView() {
@@ -167,6 +174,12 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
             @Override
             public void onClick(View view) {
                 AppActivity.FavouriteRecipe(AppActivity.currentSession.getId(), rec.getId());
+
+                if (notFavourite) {
+                    viewHolder.getFavourite().setImageDrawable(getDrawable(cntxt, R.drawable.fav_filled));
+                    Anims.ScaleViewAnim(view).start();
+                }
+
                 notifyItemChanged(viewHolder.getAdapterPosition());
             }
         });

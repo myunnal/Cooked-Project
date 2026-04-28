@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
     private void setCurrentFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out
+                )
                 // Replace the fragment inside the container with the new fragment
                 .replace(R.id.fragment_container, fragment)
                 // Commit the transaction to actually perform the change
