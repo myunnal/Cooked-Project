@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,13 +54,13 @@ public class FavoritesFolderActivity extends AppCompatActivity {
         addRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowAddRecipeDialog();
+                addRecipeDialog();
             }
         });
 
-        LoadFolderRecipes();
+        loadFolderRecipes();
     }
-    private void LoadFolderRecipes()
+    private void loadFolderRecipes()
     {
         List<Recipe> recipes = db.folderRecipeDAO().getRecipesInFolder(folderId);
 
@@ -71,10 +68,9 @@ public class FavoritesFolderActivity extends AppCompatActivity {
         folderRecipeList.setAdapter(recipeFeed);
     }
 
-    private void ShowAddRecipeDialog()
+    private void addRecipeDialog()
     {
-        List<Recipe> savedRecipes = db.recipeDao()
-                .getFavouriteRecipes(AppActivity.currentSession.getId());
+        List<Recipe> savedRecipes = db.recipeDao().getFavouriteRecipes(AppActivity.currentSession.getId());
 
         String[] recipeNames = new String[savedRecipes.size()];
 
@@ -83,8 +79,7 @@ public class FavoritesFolderActivity extends AppCompatActivity {
             recipeNames[i] = savedRecipes.get(i).getName();
         }
 
-        new AlertDialog.Builder(this)
-                .setTitle("Add recipe to folder")
+        new AlertDialog.Builder(this).setTitle("Add recipe to folder")
                 .setItems(recipeNames, (dialog, which) -> {
                     Recipe selectedRecipe = savedRecipes.get(which);
 
@@ -97,7 +92,7 @@ public class FavoritesFolderActivity extends AppCompatActivity {
                                 new FolderRecipe(folderId, selectedRecipe.getId())
                         );
 
-                        LoadFolderRecipes();
+                        loadFolderRecipes();
                     }
 
                 }).show();

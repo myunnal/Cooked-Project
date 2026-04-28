@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class FavouritesFragment extends Fragment {
     AppDatabase db;
     RecyclerView recyclerView;
     Button addFolder;
+    Button deleteFolderButton;
+    boolean deleteFolderMode = false;
     LinearLayout folderList;
 
 
@@ -88,17 +91,34 @@ public class FavouritesFragment extends Fragment {
         addFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowCreateFolderDialog();
+                createFolderDialog();
+            }
+        });
+
+        deleteFolderButton = view.findViewById(R.id.deleteFolderButton);
+
+        deleteFolderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteFolderMode = !deleteFolderMode;
+
+                if (deleteFolderMode) {
+                    deleteFolderButton.setText("Cancel Delete");
+                } else {
+                    deleteFolderButton.setText("Delete Folder");
+                }
+
+                loadFolders();
             }
         });
 
 
-        LoadFolders();
+        loadFolders();
         // Inflate the layout for this fragment
         return view;
     }
 
-    private void LoadFolders()
+    private void loadFolders()
     {
         folderList.removeAllViews();
 
@@ -108,14 +128,48 @@ public class FavouritesFragment extends Fragment {
         for (FavoritesFolder folder : folders)
         {
             Button folderButton = new Button(getContext());
-            folderButton.setText(folder.name());
+
+            if (deleteFolderMode) {
+                folderButton.setText("X  " + folder.name());
+            } else {
+                folderButton.setText(folder.name());
+            }
 
             folderButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
-                    intent.putExtra("folderId", folder.getId());
-                    startActivity(intent);
+                    if (!deleteFolderMode) {
+                        Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
+                        intent.putExtra("folderId", folder.getId());
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            folderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (!deleteFolderMode) {
+                        Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
+                        intent.putExtra("folderId", folder.getId());
+                        startActivity(intent);
+                        return;
+                    }
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Delete folder")
+                            .setMessage("Delete \"" + folder.name() + "\"?")
+                            .setPositiveButton("Delete", (dialog, which) -> {
+                                db.favoritesFolderDAO().deleteFolder(folder.getId());
+
+                                deleteFolderMode = false;
+                                deleteFolderButton.setText("Delete Folder");
+
+                                loadFolders();
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
                 }
             });
 
@@ -123,7 +177,7 @@ public class FavouritesFragment extends Fragment {
         }
     }
 
-    private void ShowCreateFolderDialog()
+    private void createFolderDialog()
     {
         EditText input = new EditText(getContext());
         input.setHint("Folder name");
@@ -140,7 +194,10 @@ public class FavouritesFragment extends Fragment {
                                 new FavoritesFolder(AppActivity.currentSession.getId(), folderName)
                         );
 
-                        LoadFolders();
+                        loadFolders();
+                    }else
+                    {
+                        Toast.makeText(getContext(), "Folder name can't be empty", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", null)
