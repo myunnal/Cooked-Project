@@ -36,16 +36,20 @@ public class RegisterActivity extends AppCompatActivity {
         EditText email = findViewById(R.id.regEmail);
         EditText pass1 = findViewById(R.id.regPass1);
         EditText pass2 = findViewById(R.id.regPass2);
-
+        View root = findViewById(R.id.main);
 
         Button register = findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Anims.ScaleViewAnim(view, 1.5f).start();
+
                 if (TextUtils.isEmpty(userText.getText()) || TextUtils.isEmpty(email.getText()) ||
                         TextUtils.isEmpty(pass1.getText()) || TextUtils.isEmpty(pass2.getText()))
                 {
                     Toast.makeText(getApplicationContext(), "fields cannot be empty", Toast.LENGTH_SHORT).show();
+                    Anims.Shake(root, 1f).start();
                     return;
                 }
 
@@ -53,18 +57,21 @@ public class RegisterActivity extends AppCompatActivity {
                 if (attempt != null)
                 {
                     Toast.makeText(getApplicationContext(), "username taken", Toast.LENGTH_SHORT).show();
+                    Anims.Shake(root, 1f).start();
                     return;
                 }
 
                 if (!pass1.getText().toString().equals(pass2.getText().toString()))
                 {
                     Toast.makeText(getApplicationContext(), "passwords do not match", Toast.LENGTH_SHORT).show();
+                    Anims.Shake(root, 1f).start();
                     return;
                 }
 
                 if(email.getText().toString().isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches())
                 {
                     Toast.makeText(getApplicationContext(), "email not valid", Toast.LENGTH_SHORT).show();
+                    Anims.Shake(root, 1f).start();
                     return;
                 }
 
@@ -88,8 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
 
-                return;
-
+                Anims.Shake(root, 1f).start();
             }
         });
     }

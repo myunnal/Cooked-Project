@@ -73,6 +73,11 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
                 getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_filled));
             else
                 getFavourite().setImageDrawable(cntxt.getDrawable(R.drawable.fav_empty));
+
+            if (!notFavourite) {
+                //getFavourite().setImageDrawable(getDrawable(cntxt, R.drawable.fav_filled));
+                Anims.ScaleViewAnim(getFavourite()).start();
+            }
         }
 
         public TextView getTextView() {
