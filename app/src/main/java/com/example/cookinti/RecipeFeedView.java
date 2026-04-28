@@ -8,8 +8,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,8 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
         private final TextView descriptionText;
         private final ImageView imageView;
         private final ImageButton favButton;
+        private final RatingBar recipeRating;
+        private final Button addReviewButton;
 
         public ViewHolder(View view) {
             super(view);
@@ -41,6 +45,8 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
             descriptionText = (TextView) view.findViewById(R.id.descriptionText);
             imageView = (ImageView) view.findViewById(R.id.recipeImage);
             favButton = (ImageButton) view.findViewById(R.id.fav);
+            recipeRating = (RatingBar) view.findViewById(R.id.recipeRating);
+            addReviewButton = (Button) view.findViewById(R.id.addReviewButton);
         }
 
         public void SetUpRecipeFeedView(Recipe recipe, AppDatabase db)
@@ -91,6 +97,13 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
         public ImageView getFavourite() {
             return favButton;
         }
+        public RatingBar getRecipeRating() {
+            return recipeRating;
+        }
+
+        public Button getAddReviewButton() {
+            return addReviewButton;
+        }
     }
 
 
@@ -139,6 +152,9 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
 
         String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
         viewHolder.getAuthorText().setText(userName);
+
+        float review = db.reviewDao().getAverageRating(rec.getId());
+        viewHolder.getRecipeRating().setRating(review);
 
         Context cntxt = viewHolder.getImageView().getContext();
         viewHolder.getImageView().setOnClickListener(new View.OnClickListener() {

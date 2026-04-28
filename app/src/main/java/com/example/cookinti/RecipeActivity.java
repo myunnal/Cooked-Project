@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,8 @@ public class RecipeActivity extends AppCompatActivity {
         recipeHolder.getTextView().setText(rec.getName());
         recipeHolder.getDescriptionText().setText(rec.getDescription());
 
+        long userId = AppActivity.currentSession.getId();
+
         Uri uri;
         if (rec.getImageLink() != null) {
             uri = Uri.parse(rec.getImageLink());
@@ -57,6 +60,45 @@ public class RecipeActivity extends AppCompatActivity {
 
         String userName = db.userDao().getUser(rec.getFk_userid()).getUsername();
         recipeHolder.getAuthorText().setText(userName);
+        //final int[] ratingValue = new int[1]; // fuckass android studio suggestion
+
+        recipeHolder.getRecipeRating().setIsIndicator(false);
+        Review review = db.reviewDao().getUserReview(userId, rec.getId());
+
+        if (review != null){
+            recipeHolder.getRecipeRating().setRating(review.getStars());
+        }
+        recipeHolder.getRecipeRating().setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                recipeHolder.getAddReviewButton().setVisibility(View.VISIBLE);
+                //ratingValue[0] = (int)v;
+            }
+        });
+
+
+        recipeHolder.getAddReviewButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int stars = (int)recipeHolder.getRecipeRating().getRating();
+                if (review != null){
+                    review.setStars(stars);
+                }
+                else{
+                    Review review = new Review(
+                            stars,
+                            userId,
+                            rec.getId()
+                    );
+
+                    db.reviewDao().insert(review);
+                }
+
+                recipeHolder.getAddReviewButton().setVisibility(View.INVISIBLE);
+                // somehow update RecipeFeedView ):
+            }
+        });
+
 
         recipeHolder.SetUpRecipeFeedView(rec, db);
 
