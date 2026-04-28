@@ -2,6 +2,7 @@ package com.example.cookinti;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class RecipePagerActivity extends AppCompatActivity {
 
     AppDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class RecipePagerActivity extends AppCompatActivity {
         Button btnNext = findViewById(R.id.btnNext);
         Button btnPrev = findViewById(R.id.btnPrev);
         ViewPager2 viewPager = findViewById(R.id.stepsViewPager);
+
 
         TextView recipeName = findViewById(R.id.tvRecipeName);
         recipeName.setText(rec.getName());
@@ -60,6 +63,7 @@ public class RecipePagerActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(current - 1);
             }
         });
+
     }
 
     private List<String> convertJsonToList(String json) {

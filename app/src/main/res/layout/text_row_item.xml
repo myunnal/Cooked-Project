@@ -48,6 +48,38 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="left|center"
+                >
+                <RatingBar
+                    android:id="@+id/recipeRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    style = "?android:attr/ratingBarStyleIndicator"
+                    android:numStars="5"
+                    android:progressTint="@color/lilac"
+                    android:stepSize="1"
+
+                    />
+
+                <Button
+                    android:id="@+id/addReviewButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Review"
+                    android:clickable="false"
+                    android:visibility="invisible"
+
+                    />
+            </LinearLayout>
+
+
             <TextView
                 android:id="@+id/authorText"
                 android:layout_width="match_parent"

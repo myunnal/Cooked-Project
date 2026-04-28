@@ -49,6 +49,8 @@ public class AppActivity extends Application {
                 null
         ));
 
+
+
         long uid = db.userDao().getAllUsers().get(0).getId();
 
         // refactored to use constructor
@@ -64,7 +66,19 @@ public class AppActivity extends Application {
                 "[\"Susmulkinkite česnako skilteles bei svogūną. Pamerkite vandenyje (galima ir piene) baltos duonos riekeles.\"," +
                         "\"Į dubenį sudėkite kiaulienos bei kalakutienos faršą, suberkite prieskonius, dėkite majonezą, įmuškite kiaušinius, suberkite česnaką, svogūną, sudėkite nuspaustas baltos duonos riekeles, viską gerai išminkykite.\","+
                         "\"Kepkite keptuvėje iš abiejų pusių, kol gražiai parus.\"]",
-                ""
+                "meatlunchquick"
+        ));
+
+        db.reviewDao().insert(new Review(
+                5,
+                uid,
+                db.recipeDao().getAllRecipes().get(0).getId()
+        ));
+
+        db.reviewDao().insert(new Review(
+                1,
+                uid,
+                db.recipeDao().getAllRecipes().get(0).getId()
         ));
 
         db.recipeDao().insert(new Recipe(
