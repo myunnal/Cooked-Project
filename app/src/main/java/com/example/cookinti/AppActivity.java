@@ -21,7 +21,7 @@ public class AppActivity extends Application {
         super.onCreate();
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my_app_db")
                 .allowMainThreadQueries().build();
-        //SetUpDatabase(); //uncommented for testing
+        SetUpDatabase(); //uncommented for testing
     }
 
     public static AppDatabase getDatabase() {

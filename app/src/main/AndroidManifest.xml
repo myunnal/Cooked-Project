@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cookinti">
+
         <activity
-            android:name=".ReviewActivity"
             android:name=".FavoritesFolderActivity"
             android:exported="false" />
         <activity
