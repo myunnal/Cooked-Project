@@ -30,4 +30,10 @@ public interface UserDAO {
 
     @Query("UPDATE User SET pfp = :newImage WHERE id = :userid")
     void updateImage(long userid, String newImage);
+
+    @Query("UPDATE User SET bio = :newBio WHERE id = :userid")
+    void updateBio(long userid, String newBio);
+
+    @Query("UPDATE User SET pronouns = :newPronouns WHERE id = :userid")
+    void updatePronouns(long userid, String newPronouns);
 }

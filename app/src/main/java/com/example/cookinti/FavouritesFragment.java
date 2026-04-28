@@ -1,7 +1,9 @@
 package com.example.cookinti;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +27,11 @@ public class FavouritesFragment extends Fragment {
 
     AppDatabase db;
     RecyclerView recyclerView;
+    Button addFolder;
+    Button deleteFolderButton;
+    boolean deleteFolderMode = false;
+    LinearLayout folderList;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,8 +85,122 @@ public class FavouritesFragment extends Fragment {
         RecipeFeedView recipeFeed = new RecipeFeedView(recipes, db);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recipeFeed);
+        addFolder = view.findViewById(R.id.addFolderButton);
+        folderList = view.findViewById(R.id.folderList);
 
+        addFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createFolderDialog();
+            }
+        });
+
+        deleteFolderButton = view.findViewById(R.id.deleteFolderButton);
+
+        deleteFolderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteFolderMode = !deleteFolderMode;
+
+                if (deleteFolderMode) {
+                    deleteFolderButton.setText("Cancel Delete");
+                } else {
+                    deleteFolderButton.setText("Delete Folder");
+                }
+
+                loadFolders();
+            }
+        });
+
+
+        loadFolders();
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void loadFolders()
+    {
+        folderList.removeAllViews();
+
+        List<FavoritesFolder> folders = db.favoritesFolderDAO()
+                .getFoldersForUser(AppActivity.currentSession.getId());
+
+        for (FavoritesFolder folder : folders)
+        {
+            Button folderButton = new Button(getContext());
+
+            if (deleteFolderMode) {
+                folderButton.setText("X  " + folder.name());
+            } else {
+                folderButton.setText(folder.name());
+            }
+
+            folderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!deleteFolderMode) {
+                        Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
+                        intent.putExtra("folderId", folder.getId());
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            folderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (!deleteFolderMode) {
+                        Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
+                        intent.putExtra("folderId", folder.getId());
+                        startActivity(intent);
+                        return;
+                    }
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Delete folder")
+                            .setMessage("Delete \"" + folder.name() + "\"?")
+                            .setPositiveButton("Delete", (dialog, which) -> {
+                                db.favoritesFolderDAO().deleteFolder(folder.getId());
+
+                                deleteFolderMode = false;
+                                deleteFolderButton.setText("Delete Folder");
+
+                                loadFolders();
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
+            });
+
+            folderList.addView(folderButton);
+        }
+    }
+
+    private void createFolderDialog()
+    {
+        EditText input = new EditText(getContext());
+        input.setHint("Folder name");
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Create folder")
+                .setView(input)
+                .setPositiveButton("Create", (dialog, which) -> {
+                    String folderName = input.getText().toString();
+
+                    if (!folderName.isEmpty())
+                    {
+                        db.favoritesFolderDAO().insert(
+                                new FavoritesFolder(AppActivity.currentSession.getId(), folderName)
+                        );
+
+                        loadFolders();
+                    }else
+                    {
+                        Toast.makeText(getContext(), "Folder name can't be empty", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
