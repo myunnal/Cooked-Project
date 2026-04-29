@@ -1,5 +1,7 @@
 package com.example.cookinti;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -127,24 +132,32 @@ public class FavouritesFragment extends Fragment {
 
         for (FavoritesFolder folder : folders)
         {
-            Button folderButton = new Button(getContext());
+            MaterialButton folderButton = new MaterialButton(requireContext());
 
             if (deleteFolderMode) {
                 folderButton.setText("X  " + folder.name());
+
+                ObjectAnimator shake = ObjectAnimator.ofFloat(folderButton, "rotation", -1f, 1f);
+                shake.setDuration(90);
+                shake.setRepeatCount(ValueAnimator.INFINITE);
+                shake.setRepeatMode(ValueAnimator.REVERSE);
+                shake.setInterpolator(new LinearInterpolator());
+                shake.start();
+
+                ObjectAnimator move = ObjectAnimator.ofFloat(folderButton, "translationX", -2f, 2f);
+
+                move.setDuration(90);
+                move.setRepeatCount(ValueAnimator.INFINITE);
+                move.setRepeatMode(ValueAnimator.REVERSE);
+                move.setInterpolator(new LinearInterpolator());
+                move.start();
+
+
             } else {
                 folderButton.setText(folder.name());
+                folderButton.setRotation(0f);
+                folderButton.setTranslationX(0f);
             }
-
-            folderButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!deleteFolderMode) {
-                        Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
-                        intent.putExtra("folderId", folder.getId());
-                        startActivity(intent);
-                    }
-                }
-            });
 
             folderButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -11,6 +11,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Universal AlertDialog style -->
+        <item name="alertDialogTheme">@style/AppAlertDialogTheme</item>
+        <item name="materialAlertDialogTheme">@style/AppAlertDialogTheme</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -22,4 +25,20 @@
     <style name="Theme.Cookinti.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Cookinti.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Universal dialog theme -->
+    <style name="AppAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="colorAccent">@color/burgundy</item>
+        <item name="android:colorAccent">@color/burgundy</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">7dp</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleText</item>
+    </style>
+    <style name="DialogTitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/burgundy</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
