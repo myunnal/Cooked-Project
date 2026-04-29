@@ -31,10 +31,19 @@ public class UserRecipes extends AppCompatActivity {
     TextView followers;
     TextView bio;
     RecyclerView recyclerView;
+    RecipeFeedView recipeFeed;
     AppDatabase db;
     Button follow;
 
+
     ImageView profileImage;
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        if (recipeFeed != null)
+            recipeFeed.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,8 @@ public class UserRecipes extends AppCompatActivity {
         userName = findViewById(R.id.UserName);
         userid = getIntent().getExtras().getLong("userid");
         profileImage = (ImageView) findViewById(R.id.profileImage);
+        pronouns = findViewById(R.id.pronouns);
+        bio = findViewById(R.id.descriptionText);
 
         DisplayUser();
 
@@ -74,7 +85,7 @@ public class UserRecipes extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.recycler_view2);
-        RecipeFeedView recipeFeed = new RecipeFeedView(
+        recipeFeed = new RecipeFeedView(
                 db.recipeDao().getUserRecipes(userid), db
         );
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
@@ -94,6 +105,9 @@ public class UserRecipes extends AppCompatActivity {
 
         User user = db.userDao().getUser(userid);
         userName.setText(user.getUsername());
+        bio.setText(user.getBio());
+        pronouns.setText(user.getPronouns());
+
 
         Uri uri;
         if (user.getPfpLink() != null) {

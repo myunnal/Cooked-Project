@@ -30,6 +30,7 @@ public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecycle
         private final TextView descriptionText;
         private final ImageView profileImage;
         private final Button follow;
+        private final TextView pronouns;
 
         public FollowHolder(View view) {
             super(view);
@@ -40,6 +41,7 @@ public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecycle
             descriptionText = (TextView) view.findViewById(R.id.descriptionText);
             profileImage = (ImageView) view.findViewById(R.id.profileImage);
             follow = (Button) view.findViewById(R.id.follow);
+            pronouns = view.findViewById(R.id.pronouns);
         }
 
         public TextView getFollowers() {
@@ -59,6 +61,7 @@ public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecycle
         public Button getFollow() {
             return follow;
         }
+        public TextView getPronouns() {return pronouns;}
     }
 
 
@@ -95,6 +98,7 @@ public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecycle
         User rec = users.get(position);
         viewHolder.getUserName().setText(rec.getUsername());
         viewHolder.getDescriptionText().setText(rec.getBio());
+        viewHolder.getPronouns().setText(rec.getPronouns());
 
         Uri uri;
         if (rec.getPfpLink() != null) {

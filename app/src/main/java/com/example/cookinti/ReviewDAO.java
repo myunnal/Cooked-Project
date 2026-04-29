@@ -23,6 +23,6 @@ public interface ReviewDAO {
     @Query("SELECT * from Review WHERE Review.fk_user = :userId AND Review.fk_recipe = :recipeId")
     Review getUserReview(long userId, long recipeId);
 
-    @Query("DELETE from Review WHERE Review.id = :id")
-    void removeReview(long id);
+    @Query("DELETE from Review WHERE Review.fk_user = :userId AND Review.fk_recipe = :recipeId")
+    void removeReview(long userId, long recipeId);
 }

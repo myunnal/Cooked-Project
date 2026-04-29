@@ -28,8 +28,16 @@ public class FeedFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (recipeFeed != null)
+            recipeFeed.notifyDataSetChanged();
+    }
+
     AppDatabase db;
     RecyclerView recyclerView;
+    RecipeFeedView recipeFeed;
 
     /**
      * Use this factory method to create a new instance of
@@ -77,7 +85,7 @@ public class FeedFragment extends Fragment {
         List<Recipe> recipes = db.recipeDao().getFollowingRecipes(AppActivity.currentSession.getId());
 
         recyclerView = view.findViewById(R.id.recycler_view2);
-        RecipeFeedView recipeFeed = new RecipeFeedView(recipes, db);
+        recipeFeed = new RecipeFeedView(recipes, db);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(recipeFeed);
 

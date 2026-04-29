@@ -83,6 +83,14 @@ public class RecipeActivity extends AppCompatActivity {
                 int stars = (int)recipeHolder.getRecipeRating().getRating();
                 if (review != null){
                     review.setStars(stars);
+
+                    db.reviewDao().removeReview(userId, rec.getId());
+                    Review review = new Review(
+                            stars,
+                            userId,
+                            rec.getId()
+                    );
+                    db.reviewDao().insert(review);
                 }
                 else{
                     Review review = new Review(

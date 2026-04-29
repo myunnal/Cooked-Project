@@ -41,6 +41,13 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (recipeFeed != null)
+            recipeFeed.notifyDataSetChanged();
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
