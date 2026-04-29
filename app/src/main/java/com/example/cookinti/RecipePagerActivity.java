@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,9 @@ public class RecipePagerActivity extends AppCompatActivity {
         StepAdapter adapter = new StepAdapter(stepsList);
         viewPager.setAdapter(adapter);
 
+        viewPager.setPageTransformer(new FlipPageTransformer()); // page flip anim
+        viewPager.setOffscreenPageLimit(1);
+
         btnNext.setOnClickListener(v -> {
             int current = viewPager.getCurrentItem();
             if (current < adapter.getItemCount() - 1) {
@@ -61,6 +65,15 @@ public class RecipePagerActivity extends AppCompatActivity {
             int current = viewPager.getCurrentItem();
             if (current > 0) {
                 viewPager.setCurrentItem(current - 1);
+            }
+        });
+
+        ImageButton buttonBack= findViewById(R.id.backButton);
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

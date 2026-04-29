@@ -1,7 +1,9 @@
 package com.example.cookinti;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,12 +38,36 @@ public class MainActivity extends AppCompatActivity {
         // sets the fragment the app starts with
         setCurrentFragment(new FeedFragment());
 
+        int item = bottomNavigationView.getMenu().getItem(0).getItemId();
+        findViewById(item).setTranslationZ(1.0f);
+        Anims.ScaleAndMoveItem(findViewById(item), true).start();
+
+        //ImageView circle = findViewById(R.id.circle_center);
+        //circle.setTranslationX(findViewById(item).getTranslationX());
+        //circle.setTranslationY(findViewById(item).getTranslationY());
+
         this.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
         // footer things, apparently if-else is better than switch for android
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+
             int itemId = menuItem.getItemId();
+
+            // 1. Reset all icons first (optional, but ensures only one is raised)
+            for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+                int id = bottomNavigationView.getMenu().getItem(i).getItemId();
+                View itemView = findViewById(id);
+                if (itemView != null) {
+                    Anims.ScaleAndMoveItem(itemView, false).start();
+                }
+            }
+
+            // 2. Animate the specific clicked icon
+            View selectedView = findViewById(itemId);
+            if (selectedView != null) {
+                Anims.ScaleAndMoveItem(selectedView, true).start();
+            }
             if (itemId == R.id.feed) {
                 setCurrentFragment(new FeedFragment());
             } else if (itemId == R.id.search) {
