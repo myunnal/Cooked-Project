@@ -1,8 +1,14 @@
 package com.example.cookinti;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -13,9 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,7 +44,8 @@ public class FavouritesFragment extends Fragment {
     Button deleteFolderButton;
     boolean deleteFolderMode = false;
     LinearLayout folderList;
-
+    public ImageView poof;
+    public AnimationDrawable poofAnimation;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,6 +55,7 @@ public class FavouritesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -174,12 +184,57 @@ public class FavouritesFragment extends Fragment {
                             .setTitle("Delete folder")
                             .setMessage("Delete \"" + folder.name() + "\"?")
                             .setPositiveButton("Delete", (dialog, which) -> {
-                                db.favoritesFolderDAO().deleteFolder(folder.getId());
 
-                                deleteFolderMode = false;
-                                deleteFolderButton.setText("Delete Folder");
+                                folderButton.clearAnimation();
 
-                                loadFolders();
+                                ObjectAnimator scaleXUp = ObjectAnimator.ofFloat(folderButton, "scaleX", 1f, 2.5f);
+                                ObjectAnimator scaleYUp = ObjectAnimator.ofFloat(folderButton, "scaleY", 1f, 2.5f);
+                                scaleXUp.setInterpolator(new DecelerateInterpolator());
+                                scaleYUp.setInterpolator(new DecelerateInterpolator());
+                                ObjectAnimator scaleXDown = ObjectAnimator.ofFloat(folderButton, "scaleX", 2.5f, -2f);
+                                ObjectAnimator scaleYDown = ObjectAnimator.ofFloat(folderButton, "scaleY", 2.5f, -2f);
+                                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(folderButton, "alpha", 1f, 0f);
+
+                                AnimatorSet expand = new AnimatorSet();
+                                expand.playTogether(scaleXUp, scaleYUp);
+                                expand.setDuration(120);
+
+                                AnimatorSet shrink = new AnimatorSet();
+                                shrink.playTogether(scaleXDown, scaleYDown, fadeOut);
+                                shrink.setDuration(200);
+
+                                AnimatorSet animatorSet = new AnimatorSet();
+                                animatorSet.playSequentially(expand, shrink);
+                                animatorSet.addListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        db.favoritesFolderDAO().deleteFolder(folder.getId());
+                                        deleteFolderMode = false;
+                                        deleteFolderButton.setText("Delete Folder");
+
+                                        poof = new ImageView(requireContext());
+                                        poof.setLayoutParams(new ViewGroup.LayoutParams(folderButton.getWidth(), folderButton.getHeight()));
+                                        poof.setX(folderButton.getX());
+                                        poof.setY(folderButton.getY()-120f);
+                                        poof.setImageResource(R.drawable.poof_animation);
+                                        folderList.addView(poof);
+
+                                        poofAnimation = (AnimationDrawable) poof.getDrawable();
+                                        poof.post(() -> poofAnimation.start());
+
+                                        int totalDuration = 0;
+                                        for (int i = 0; i < poofAnimation.getNumberOfFrames(); i++) {
+                                            totalDuration += poofAnimation.getDuration(i);
+                                        }
+
+                                        poof.postDelayed(() -> {
+                                            folderList.removeView(poof);
+                                            loadFolders();
+                                        }, totalDuration);
+
+                                    }
+                                });
+                                animatorSet.start();
                             })
                             .setNegativeButton("Cancel", null)
                             .show();

@@ -11,6 +11,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!--Button style -->
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="materialButtonStyle">@style/ButtonStyle</item>
         <!-- Universal AlertDialog style -->
         <item name="alertDialogTheme">@style/AppAlertDialogTheme</item>
         <item name="materialAlertDialogTheme">@style/AppAlertDialogTheme</item>
@@ -39,6 +42,19 @@
         <item name="android:textColor">@color/burgundy</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Button style -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/sample_buttognnn</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:textColor">@color/off_white</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="elevation">100dp</item>
+
     </style>
 
 </resources>
