@@ -62,6 +62,10 @@ public class RecipeActivity extends AppCompatActivity {
         recipeHolder.getAuthorText().setText(userName);
         //final int[] ratingValue = new int[1]; // fuckass android studio suggestion
 
+        // -- REVIEWS SECTION --
+
+        Button addReviewButton = recipeHolder.getAddReviewButton();
+
         recipeHolder.getRecipeRating().setIsIndicator(false);
         Review review = db.reviewDao().getUserReview(userId, rec.getId());
 
@@ -71,13 +75,15 @@ public class RecipeActivity extends AppCompatActivity {
         recipeHolder.getRecipeRating().setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                recipeHolder.getAddReviewButton().setVisibility(View.VISIBLE);
+
+                addReviewButton.setVisibility(View.VISIBLE);
+                Anims.ItemAppearing(findViewById(addReviewButton.getId()), true).start();
                 //ratingValue[0] = (int)v;
             }
         });
 
 
-        recipeHolder.getAddReviewButton().setOnClickListener(new View.OnClickListener() {
+        addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int stars = (int)recipeHolder.getRecipeRating().getRating();
@@ -101,12 +107,13 @@ public class RecipeActivity extends AppCompatActivity {
 
                     db.reviewDao().insert(review);
                 }
+                Anims.ItemAppearing(findViewById(addReviewButton.getId()), false).start();
+                addReviewButton.setVisibility(View.INVISIBLE);
 
-                recipeHolder.getAddReviewButton().setVisibility(View.INVISIBLE);
-                // somehow update RecipeFeedView ):
             }
         });
 
+        // -----
 
         recipeHolder.SetUpRecipeFeedView(rec, db);
 

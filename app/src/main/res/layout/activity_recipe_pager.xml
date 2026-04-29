@@ -32,8 +32,11 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/stepsViewPager"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="20dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+
         app:layout_constraintTop_toBottomOf="@id/tvRecipeName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

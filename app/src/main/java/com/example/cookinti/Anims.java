@@ -56,4 +56,49 @@ public class Anims {
 
         return anims;
     }
+
+    public static AnimatorSet ScaleAndMoveItem(View view, boolean isSelected){
+        float scale = isSelected ? 1.2f : 1.0f;
+        float translationY = isSelected ? -30f : 0f;
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", scale);
+        scaleX.setDuration(200);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", scale);
+        scaleY.setDuration(200);
+        scaleX.setInterpolator(new DecelerateInterpolator());
+        scaleY.setInterpolator(new DecelerateInterpolator());
+
+        ObjectAnimator translateY = ObjectAnimator.ofFloat(view, "translationY", translationY);
+        translateY.setDuration(200);
+        translateY.setInterpolator(new DecelerateInterpolator());
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playTogether(scaleX, scaleY, translateY);
+
+        return animSet;
+    }
+
+    public static AnimatorSet ItemAppearing(View view, boolean isAppearing){
+        ObjectAnimator scaleX = new ObjectAnimator();
+        ObjectAnimator scaleY = new ObjectAnimator();
+
+        if(isAppearing){
+            scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0f, 1.2f, 1f);
+            scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0f, 1.2f, 1f);
+        }
+        else{
+            scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0f);
+            scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 0f);
+        }
+
+        scaleX.setDuration(400);
+        scaleY.setDuration(400);
+        scaleX.setInterpolator(new AccelerateInterpolator());
+        scaleY.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.playTogether(scaleX, scaleY);
+
+        return animSet;
+    }
 }

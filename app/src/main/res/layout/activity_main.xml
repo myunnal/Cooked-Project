@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/off_white"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -25,9 +27,15 @@
         android:background="@color/burgundy"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
+        app:itemBackground="@drawable/ic_circle"
+
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

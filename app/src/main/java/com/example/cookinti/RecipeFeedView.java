@@ -146,7 +146,12 @@ public class RecipeFeedView extends RecyclerView.Adapter<RecipeFeedView.ViewHold
 
         Recipe rec = recipes.get(position);
         viewHolder.getTextView().setText(rec.getName());
-        viewHolder.getDescriptionText().setText(rec.getDescription());
+
+        String descText = rec.getDescription().length() < 70 ?
+                rec.getDescription() : (rec.getDescription().substring(0, 69) + "...");
+        // desc text cuts off if too long
+
+        viewHolder.getDescriptionText().setText(descText);
 
         Uri uri;
         if (rec.getImageLink() != null) {
