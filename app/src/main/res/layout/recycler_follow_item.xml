@@ -74,7 +74,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="2dp"
         android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMinTextSize="6sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
         android:text="Follow"

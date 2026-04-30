@@ -80,6 +80,7 @@ public class UserRecipes extends AppCompatActivity {
                 {
                     db.followDao().removeFollow(AppActivity.currentSession.getId(), userid);
                 }
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 DisplayUser();
             }
         });

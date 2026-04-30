@@ -130,6 +130,7 @@ public class FollowersRecyclerView extends RecyclerView.Adapter<FollowersRecycle
             @Override
             public void onClick(View view) {
                 AppActivity.FollowUser(AppActivity.currentSession.getId(), rec.getId());
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 notifyItemChanged(viewHolder.getAdapterPosition());
             }
         });

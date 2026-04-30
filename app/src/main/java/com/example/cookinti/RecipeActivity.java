@@ -107,6 +107,7 @@ public class RecipeActivity extends AppCompatActivity {
 
                     db.reviewDao().insert(review);
                 }
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 Anims.ItemAppearing(findViewById(addReviewButton.getId()), false).start();
                 addReviewButton.setVisibility(View.INVISIBLE);
 
@@ -132,6 +133,7 @@ public class RecipeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                Anims.ScaleViewAnim(view, 1.1f).start();
             }
         });
 
@@ -139,6 +141,7 @@ public class RecipeActivity extends AppCompatActivity {
         makeRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 Intent intent = new Intent(getBaseContext(), RecipePagerActivity.class);
                 intent.putExtra("RecipeId", getIntent().getExtras().getLong("RecipeId"));
                 startActivity(intent);

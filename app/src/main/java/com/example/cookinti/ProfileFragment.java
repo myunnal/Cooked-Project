@@ -132,6 +132,7 @@ public class ProfileFragment extends Fragment {
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Anims.ScaleViewAnim(v, 1.1f).start();
                 Intent openPage = new Intent(getContext(), RecipeCreationActivity.class);
                 startActivity(openPage);
             }
@@ -140,6 +141,7 @@ public class ProfileFragment extends Fragment {
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Anims.ScaleViewAnim(v, 1.1f).start();
                 descriptionEdit.setText(descriptionText.getText().toString());
                 pronounsEdit.setText(pronouns.getText().toString());
 
@@ -160,6 +162,7 @@ public class ProfileFragment extends Fragment {
         saveProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Anims.ScaleViewAnim(v, 1.1f);
                 String newDescription = descriptionEdit.getText().toString().trim();
                 String newPronouns = pronounsEdit.getText().toString().trim();
 

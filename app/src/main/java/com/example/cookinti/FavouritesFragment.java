@@ -106,6 +106,7 @@ public class FavouritesFragment extends Fragment {
         addFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Anims.ScaleViewAnim(view, 1.1f).start();
                 createFolderDialog();
             }
         });
@@ -116,6 +117,7 @@ public class FavouritesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 deleteFolderMode = !deleteFolderMode;
+                Anims.ScaleViewAnim(view, 1.1f).start();
 
                 if (deleteFolderMode) {
                     deleteFolderButton.setText("Cancel Delete");
@@ -174,6 +176,7 @@ public class FavouritesFragment extends Fragment {
                 public void onClick(View view) {
 
                     if (!deleteFolderMode) {
+                        Anims.ScaleViewAnim(view, 1.1f).start();
                         Intent intent = new Intent(getContext(), FavoritesFolderActivity.class);
                         intent.putExtra("folderId", folder.getId());
                         startActivity(intent);

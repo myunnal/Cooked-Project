@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:background="#140E0E"
+        android:cropToPadding="true"
         android:scaleType="centerCrop"
         app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -72,11 +73,14 @@
                     android:id="@+id/addReviewButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Review"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeMinTextSize="6sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
                     android:clickable="false"
-                    android:visibility="invisible"
+                    android:text="Review"
 
-                    />
+                    android:visibility="invisible" />
             </LinearLayout>
 
 

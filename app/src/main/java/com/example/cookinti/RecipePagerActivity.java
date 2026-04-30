@@ -59,6 +59,7 @@ public class RecipePagerActivity extends AppCompatActivity {
             if (current < adapter.getItemCount() - 1) {
                 viewPager.setCurrentItem(current + 1);
             }
+            Anims.ScaleViewAnim(v, 1.1f).start();
         });
 
         btnPrev.setOnClickListener(v -> {
@@ -66,6 +67,7 @@ public class RecipePagerActivity extends AppCompatActivity {
             if (current > 0) {
                 viewPager.setCurrentItem(current - 1);
             }
+            Anims.ScaleViewAnim(v, 1.1f).start();
         });
 
         ImageButton buttonBack= findViewById(R.id.backButton);
