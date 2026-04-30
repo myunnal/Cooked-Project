@@ -223,17 +223,15 @@ public class FavouritesFragment extends Fragment {
                                         folderList.addView(poof);
 
                                         poofAnimation = (AnimationDrawable) poof.getDrawable();
-                                        poof.post(() -> poofAnimation.start());
+                                        poofAnimation.start();
 
-                                        int totalDuration = 0;
-                                        for (int i = 0; i < poofAnimation.getNumberOfFrames(); i++) {
-                                            totalDuration += poofAnimation.getDuration(i);
-                                        }
-
-                                        poof.postDelayed(() -> {
-                                            folderList.removeView(poof);
-                                            loadFolders();
-                                        }, totalDuration);
+                                        poof.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                folderList.removeView(poof);
+                                                loadFolders();
+                                            }
+                                        }, 480);
 
                                     }
                                 });
