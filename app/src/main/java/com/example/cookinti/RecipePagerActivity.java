@@ -1,5 +1,9 @@
 package com.example.cookinti;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,9 +24,15 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipePagerActivity extends AppCompatActivity {
+public class RecipePagerActivity extends AppCompatActivity implements SensorEventListener {
 
     AppDatabase db;
+
+    SensorManager sensorManager;
+    Sensor accelerometer;
+    ViewPager2 viewPager;
+    StepAdapter adapter;
+    long lastTiltTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +50,14 @@ public class RecipePagerActivity extends AppCompatActivity {
 
         Button btnNext = findViewById(R.id.btnNext);
         Button btnPrev = findViewById(R.id.btnPrev);
-        ViewPager2 viewPager = findViewById(R.id.stepsViewPager);
-
+        viewPager = findViewById(R.id.stepsViewPager);
 
         TextView recipeName = findViewById(R.id.tvRecipeName);
         recipeName.setText(rec.getName());
 
         String jsonSteps = rec.getSteps();
         List<String> stepsList = convertJsonToList(jsonSteps);
-        StepAdapter adapter = new StepAdapter(stepsList);
+        adapter = new StepAdapter(stepsList);
         viewPager.setAdapter(adapter);
 
         viewPager.setPageTransformer(new FlipPageTransformer()); // page flip anim
@@ -79,6 +88,8 @@ public class RecipePagerActivity extends AppCompatActivity {
             }
         });
 
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     private List<String> convertJsonToList(String json) {
@@ -92,5 +103,65 @@ public class RecipePagerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (accelerometer != null)
+        {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+        {
+            return;
+        }
+
+        float x = sensorEvent.values[0];
+
+        if (System.currentTimeMillis() - lastTiltTime < 900)
+        {
+            return;
+        }
+
+        if (x < (-5))
+        {
+            int current = viewPager.getCurrentItem();
+
+            if (current < adapter.getItemCount() - 1)
+            {
+                viewPager.setCurrentItem(current + 1);
+            }
+
+            lastTiltTime = System.currentTimeMillis();
+        }
+
+        if (x > 5)
+        {
+            int current = viewPager.getCurrentItem();
+
+            if (current > 0)
+            {
+                viewPager.setCurrentItem(current - 1);
+            }
+
+            lastTiltTime = System.currentTimeMillis();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // nereikalingas metodas
     }
 }
