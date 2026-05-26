@@ -138,6 +138,16 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Button groceries = rootView.findViewById(R.id.groceries);
+        groceries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Anims.ScaleViewAnim(v, 1.1f).start();
+                Intent openPage = new Intent(getContext(), MapsActivity.class);
+                startActivity(openPage);
+            }
+        });
+
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
