@@ -15,6 +15,7 @@ import javax.crypto.spec.PBEKeySpec;
 public class AppActivity extends Application {
     static AppDatabase db;
     static User currentSession;
+    static int LastID = 1;
 
     @Override
     public void onCreate(){

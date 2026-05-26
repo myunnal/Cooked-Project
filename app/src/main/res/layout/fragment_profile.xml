@@ -26,7 +26,6 @@
         android:layout_marginStart="164dp"
         android:layout_marginTop="64dp"
         android:text="Bronė Baronienė"
-        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +85,6 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="20dp"
         android:text="Mėgstu maistą ir gaminti dar labiau!"
-        android:textColor="#000000"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImage" />
@@ -102,7 +100,6 @@
         android:hint="Enter description"
         android:inputType="textMultiLine"
         android:minLines="3"
-        android:textColor="#000000"
         android:textSize="17sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"

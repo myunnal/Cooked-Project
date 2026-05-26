@@ -1,12 +1,23 @@
 package com.example.cookinti;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,9 +30,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Set;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
+    SensorManager sensorManager;
+    Sensor mLight;
     BottomNavigationView bottomNavigationView;
+    View root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +48,35 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        root = findViewById(R.id.main);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         // sets the fragment the app starts with
         setCurrentFragment(new FeedFragment());
 
-        int item = bottomNavigationView.getMenu().getItem(0).getItemId();
+        /*int item = bottomNavigationView.getMenu().getItem(0).getItemId();
+        findViewById(item).setTranslationZ(1.0f);
+        Anims.ScaleAndMoveItem(findViewById(item), true).start();*/
+
+    // PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI
+        if (AppActivity.LastID == 4) {
+            setCurrentFragment(new ProfileFragment());
+        } else if (AppActivity.LastID == 2) {
+            setCurrentFragment(new SearchFragment());
+        } else if (AppActivity.LastID == 3) {
+            setCurrentFragment(new FavouritesFragment());
+        } else {
+            setCurrentFragment(new FeedFragment());
+        }
+
+        int item = bottomNavigationView.getMenu().getItem(AppActivity.LastID - 1).getItemId();
         findViewById(item).setTranslationZ(1.0f);
         Anims.ScaleAndMoveItem(findViewById(item), true).start();
+    // PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI
 
         //ImageView circle = findViewById(R.id.circle_center);
         //circle.setTranslationX(findViewById(item).getTranslationX());
@@ -70,20 +106,22 @@ public class MainActivity extends AppCompatActivity {
             }
             if (itemId == R.id.feed) {
                 setCurrentFragment(new FeedFragment());
+                AppActivity.LastID = 1;
             } else if (itemId == R.id.search) {
                 setCurrentFragment(new SearchFragment());
+                AppActivity.LastID = 2;
             } else if (itemId == R.id.favourites) {
                 setCurrentFragment(new FavouritesFragment());
+                AppActivity.LastID = 3;
             } else if (itemId == R.id.profile) {
                 setCurrentFragment(new ProfileFragment());
+                AppActivity.LastID = 4;
             }
 
             // Return true to indicate that we handled the item click
             return true;
         });
     }
-
-
 
     // This function replaces the current fragment with the one passed as a parameter
     private void setCurrentFragment(Fragment fragment) {
@@ -97,5 +135,44 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 // Commit the transaction to actually perform the change
                 .commit();
+    }
+
+
+    /*@Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+            root.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        else
+            root.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+    }*/
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+    // The light sensor returns a single value.
+        // Many sensors return 3 values, one for each axis.
+        float lux = sensorEvent.values[0];
+
+        if (lux < 100)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
     }
 }
