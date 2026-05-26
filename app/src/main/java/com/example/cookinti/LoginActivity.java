@@ -1,10 +1,12 @@
 package com.example.cookinti;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -33,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         EditText userText = findViewById(R.id.logUser);
         EditText passText = findViewById(R.id.logPassword);
         View root = findViewById(R.id.main);
+
+        AnimatedVectorDrawable pie = (AnimatedVectorDrawable) ((ImageView) findViewById(R.id.pie)).getDrawable();
+        pie.start();
 
         Button login = findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
