@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -138,12 +139,14 @@ public class RecipeActivity extends AppCompatActivity {
         });
 
         Button makeRecipe = findViewById(R.id.make_recipe);
+        CheckBox handsFreeCheck = findViewById(R.id.hands_free);
         makeRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Anims.ScaleViewAnim(view, 1.1f).start();
                 Intent intent = new Intent(getBaseContext(), RecipePagerActivity.class);
                 intent.putExtra("RecipeId", getIntent().getExtras().getLong("RecipeId"));
+                intent.putExtra("HandsFree", handsFreeCheck.isChecked());
                 startActivity(intent);
             }
         });
