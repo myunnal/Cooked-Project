@@ -154,13 +154,45 @@ public class RecipeCreationActivity extends AppCompatActivity {
                     }
                 });
 
+        ActivityResultLauncher<Intent> cameraActivityLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        String uriString = result.getData().getStringExtra("photo_uri");
+                        if (uriString != null) {
+                            Uri cameraUri = Uri.parse(uriString);
+
+                            imageLink = cameraUri;
+                            imageView.setImageURI(cameraUri);
+                        }
+                    } else {
+                    }
+                });
+
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickMedia.launch(new PickVisualMediaRequest.Builder()
-                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                        .build());
+                CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(view.getContext());
+                builder.setTitle("Select Image Source");
+                builder.setItems(options, (dialog, item) -> {
+                    if (options[item].equals("Take Photo")) {
+                        // Launch your custom CameraActivity
+                        Intent intent = new Intent(view.getContext(), CameraActivity.class);
+                        cameraActivityLauncher.launch(intent);
+
+                    } else if (options[item].equals("Choose from Gallery")) {
+                        // Launch your existing standard Photo Picker
+                        pickMedia.launch(new PickVisualMediaRequest.Builder()
+                                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                .build());
+
+                    } else if (options[item].equals("Cancel")) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
     }
