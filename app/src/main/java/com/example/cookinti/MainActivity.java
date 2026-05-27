@@ -1,6 +1,8 @@
 package com.example.cookinti;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +20,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -113,6 +116,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             return true;
         });
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
     }
 
     private void setCurrentFragment(Fragment fragment) {

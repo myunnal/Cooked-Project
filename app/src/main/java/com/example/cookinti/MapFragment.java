@@ -1,15 +1,22 @@
 package com.example.cookinti;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,7 +32,8 @@ public class MapFragment extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-
+    private LocationManager locationManager;
+    private LocationListener locationListener;
     Button findStoresButton;
     Button popularFoods;
 
@@ -111,7 +119,50 @@ public class MapFragment extends Fragment implements
 
         mMap.setMinZoomPreference(1);
         mMap.setMaxZoomPreference(21);
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(54.561044273714565, 23.354193104717396)));
+
+
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                locationManager.removeUpdates(locationListener);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (lastKnown == null) {
+                lastKnown = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+            if (lastKnown != null) {
+                LatLng userLocation = new LatLng(lastKnown.getLatitude(), lastKnown.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (locationManager != null && locationListener != null) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
     @Override

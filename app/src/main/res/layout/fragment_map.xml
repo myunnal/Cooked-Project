@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
-        android:text="Popular Desserts"
+        android:text="Popular Dishes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map" />
 
