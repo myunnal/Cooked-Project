@@ -52,23 +52,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        // sets the fragment the app starts with
-        setCurrentFragment(new FeedFragment());
 
-        /*int item = bottomNavigationView.getMenu().getItem(0).getItemId();
-        findViewById(item).setTranslationZ(1.0f);
-        Anims.ScaleAndMoveItem(findViewById(item), true).start();*/
-
-    // PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI
+        // Sets the fragment the app starts with
         if (AppActivity.LastID == 4) {
             setCurrentFragment(new ProfileFragment());
         } else if (AppActivity.LastID == 2) {
             setCurrentFragment(new SearchFragment());
         } else if (AppActivity.LastID == 3) {
             setCurrentFragment(new FavouritesFragment());
+        } else if (AppActivity.LastID == 5) {
+            setCurrentFragment(new MapFragment());
         } else {
             setCurrentFragment(new FeedFragment());
         }
@@ -76,21 +70,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         int item = bottomNavigationView.getMenu().getItem(AppActivity.LastID - 1).getItemId();
         findViewById(item).setTranslationZ(1.0f);
         Anims.ScaleAndMoveItem(findViewById(item), true).start();
-    // PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI PAKEITIMAI
-
-        //ImageView circle = findViewById(R.id.circle_center);
-        //circle.setTranslationX(findViewById(item).getTranslationX());
-        //circle.setTranslationY(findViewById(item).getTranslationY());
 
         this.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
-        // footer things, apparently if-else is better than switch for android
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
 
             int itemId = menuItem.getItemId();
 
-            // 1. Reset all icons first (optional, but ensures only one is raised)
+            // Reset all icons
             for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
                 int id = bottomNavigationView.getMenu().getItem(i).getItemId();
                 View itemView = findViewById(id);
@@ -99,11 +87,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
 
-            // 2. Animate the specific clicked icon
+            // Animate the clicked icon
             View selectedView = findViewById(itemId);
             if (selectedView != null) {
                 Anims.ScaleAndMoveItem(selectedView, true).start();
             }
+
             if (itemId == R.id.feed) {
                 setCurrentFragment(new FeedFragment());
                 AppActivity.LastID = 1;
@@ -116,14 +105,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             } else if (itemId == R.id.profile) {
                 setCurrentFragment(new ProfileFragment());
                 AppActivity.LastID = 4;
+            } else if (itemId == R.id.map) {
+                setCurrentFragment(new MapFragment());
+                AppActivity.LastID = 5;
             }
 
-            // Return true to indicate that we handled the item click
             return true;
         });
     }
 
-    // This function replaces the current fragment with the one passed as a parameter
     private void setCurrentFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -131,33 +121,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         R.anim.fade_in,
                         R.anim.fade_out
                 )
-                // Replace the fragment inside the container with the new fragment
                 .replace(R.id.fragment_container, fragment)
-                // Commit the transaction to actually perform the change
                 .commit();
     }
 
-
-    /*@Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-            root.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-        else
-            root.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-    }*/
-
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int i) {}
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-    // The light sensor returns a single value.
-        // Many sensors return 3 values, one for each axis.
         float lux = sensorEvent.values[0];
-
         if (lux < 100)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else
