@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             View selectedView = findViewById(itemId);
             if (selectedView != null) {
                 Anims.ScaleAndMoveItem(selectedView, true).start();
+                Log.d("COCK", String.valueOf(21));
             }
 
             if (itemId == R.id.feed) {
